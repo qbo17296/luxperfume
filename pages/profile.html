@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ & Đặc quyền | Lux Perfume</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../assets/css/reset.css">
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            background-color: #f9fafb; /* Sáng hơn cho trang quản lý cá nhân */
+            color: var(--jet-black, #111111);
+        }
+
+        /* Nav adjustment for profile */
+        .navbar.profile-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            padding: 1rem 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .profile-nav .nav-links a { color: var(--text-secondary); }
+        .profile-nav .nav-links a:hover { color: var(--jet-black, #111111); }
+        .profile-nav .icon-btn { color: var(--jet-black, #111111); }
+
+        .profile-layout {
+            display: flex;
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            gap: 2rem;
+            padding: 0 1.5rem;
+            min-height: 70vh;
+        }
+
+        /* Sidebar Styling */
+        .profile-sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            align-self: flex-start;
+        }
+        .profile-sidebar h3 {
+            padding: 0 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+        .sidebar-menu {
+            list-style: none;
+        }
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(212, 175, 55, 0.05); /* Gold faded BG */
+            color: var(--gold-primary);
+            border-left: 3px solid var(--gold-primary);
+        }
+        .sidebar-menu svg {
+            width: 18px; height: 18px;
+        }
+
+        /* Main Content Container */
+        .profile-main {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .main-header {
+            margin-bottom: 3rem;
+        }
+        .main-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--jet-black, #111111);
+        }
+        .main-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ------------- DIGITAL MEMBER CARD WIDGET ------------- */
+        .card-environment {
+            width: 100%;
+            height: 280px;
+            border-radius: 16px;
+            /* Background cho environment tạo nền để hiệu ứng Glass nhìn rõ hơn */
+            background-image: url('https://images.unsplash.com/photo-1622313627725-3b951478546b?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover;
+            background-position: center 30%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+        }
+        .card-environment::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            border-radius: 16px;
+        }
+
+        /* THE CARD BODY */
+        .digital-card {
+            width: 420px;
+            height: 230px;
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            
+            /* Tiêu chuẩn chung: Glassmorphism (Dành cho Member Mới / Thân Thiết) */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--white, #ffffff);
+        }
+        
+        /* ------------- HẠNG VIP: Animated Glowing Gold Gradient ------------- */
+        .digital-card.tier-vip {
+            background: rgba(17, 17, 17, 0.75); /* Đen mờ bên trong */
+            backdrop-filter: blur(24px);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            color: #ffffff;
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+        }
+        .digital-card.tier-vip::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(60deg, #d4af37, #f3e5ab, #d4af37, #b28929, #d4af37);
+            background-size: 300% 300%;
+            z-index: -1;
+            border-radius: 20px;
+            animation: goldGlowShimmer 4s ease infinite; /* Hiệu ứng ánh sáng chạy viền lấp lánh liên tục */
+        }
+        @keyframes goldGlowShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ------------- HẠNG VVIP: Cực Phẩm Glossy Black & Bright Gold ------------- */
+        .digital-card.tier-vvip {
+            background: linear-gradient(135deg, #1f1f1f 0%, #000000 100%); /* Không dùng Glass tĩnh, dùng màu đen bóng đặc */
+            border: 1px solid var(--gold-primary);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.25), inset 0 2px 25px rgba(255,255,255,0.06);
+            color: var(--gold-primary, #d4af37);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+        /* Hiệu ứng tia sáng Glossy chéo qua nền đen của VVIP */
+        .digital-card.tier-vvip::before {
+            content: ''; 
+            position: absolute; 
+            top: -50%; left: -50%; 
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            transform: rotate(35deg);
+        }
+
+        /* Content elements within the Card */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .card-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+        .card-logo span {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin-left: 2px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .card-tier-badge {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            font-weight: 600;
+        }
+        .digital-card.tier-vip .card-tier-badge {
+            background: linear-gradient(45deg, #d4af37, #f3e5ab);
+            color: #111;
+        }
+        .digital-card.tier-vvip .card-tier-badge {
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.6);
+        }
+
+        .card-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .card-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .card-id {
+            font-family: monospace;
+            font-size: 0.875rem;
+            opacity: 0.8;
+            letter-spacing: 3px;
+        }
+
+        /* ----- Demo Controls cho người vận hành ----- */
+        .simulator-box {
+            background: #fdfdfd;
+            border: 1px dashed #d1d5db;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .simulator-box h4 {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .simulator-box select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-family: inherit;
+            width: 300px;
+            cursor: pointer;
+            outline: none;
+        }
+        .simulator-box select:focus { border-color: var(--gold-primary); }
+
+        /* Generic empty states */
+        .empty-state {
+            padding: 4rem;
+            text-align: center;
+            color: #9ca3af;
+            border: 1px dashed #e5e7eb;
+            border-radius: 12px;
+            background: #f9fafb;
+        }
+
+        /* ---------- LỊCH SỬ ĐƠN HÀNG (ORDER CARDS & TIMELINE) ---------- */
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .order-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            transition: box-shadow 0.2s;
+        }
+        .order-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border-color: #d1d5db;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #e5e7eb;
+            padding-bottom: 1rem;
+        }
+        .order-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .order-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .order-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .order-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--jet-black, #111111);
+        }
+        .order-total {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+        }
+        
+        .order-body {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .order-thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+        .order-product-details {
+            flex: 1;
+        }
+        .order-product-name {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.35rem;
+            margin-bottom: 0.25rem;
+            color: var(--jet-black, #111111);
+        }
+        .order-product-variant {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .btn-buy-again {
+            padding: 0.6rem 1.25rem;
+            border: 1px solid var(--gold-primary);
+            background: rgba(212, 175, 55, 0.05);
+            color: var(--gold-primary);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .btn-buy-again:hover {
+            background: var(--gold-primary);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+        }
+        
+        /* TIMELINE PROGRESS BAR */
+        .order-timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 0.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px dashed #e5e7eb;
+        }
+        /* Background track */
+        .order-timeline::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 5%;
+            width: 90%;
+            height: 4px;
+            background: #f3f4f6;
+            z-index: 1;
+            border-radius: 2px;
+        }
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+            width: 25%;
+        }
+        .step-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+        }
+        .step-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        /* Active States (Green #10b981) */
+        .timeline-step.completed .step-icon {
+            background: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+        .timeline-step.completed .step-label {
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        /* Timeline line fill overlay */
+        .timeline-progress {
+            position: absolute;
+            top: 2rem;
+            left: 5%;
+            height: 4px;
+            background: #10b981;
+            z-index: 1;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        /* ---------- TỦ NƯỚC HOA CỦA TÔI (SCENT WARDROBE) ---------- */
+        .scent-wardrobe {
+            margin-top: 3.5rem;
+            padding-top: 3rem;
+            border-top: 1px dashed #e5e7eb;
+        }
+        .wardrobe-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.85rem;
+            margin-bottom: 0.5rem;
+            color: var(--jet-black, #111111);
+        }
+        .wardrobe-header p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+        .wardrobe-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        .chart-box {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.03);
+            position: relative;
+            height: 340px;
+            display: flex;
+            justify-content: center;
+        }
+        @media (max-width: 900px) {
+            .wardrobe-grid { grid-template-columns: 1fr; }
+        }
+        
+        .recommend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .rec-card {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .rec-card:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+            transform: translateY(-2px);
+        }
+        .rec-img {
+            width: 70px; height: 70px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+        .rec-info { flex: 1; }
+        .rec-name {
+            font-weight: 600;
+            color: var(--jet-black, #111111);
+            font-size: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+        .rec-desc {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+        .rec-price {
+            font-weight: 600;
+            color: var(--gold-primary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        /* MODAL GIAO DIỆN (QUÀ NÂNG HẠNG) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 12px;
+            padding: 2.5rem;
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            color: #9ca3af;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-family: inherit;
+        }
+        .modal-close:hover { color: #ef4444; }
+        
+        .setting-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar profile-nav">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="text-gold">Lux</span> Perfume
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html">Trang chủ</a>
+                <a href="shop.html">Nước hoa</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="cart.html" class="icon-btn cart-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="profile-layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="profile-sidebar">
+            <h3>Danh mục</h3>
+            <ul class="sidebar-menu">
+                <li><a class="active" onclick="switchTab('overview', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> Tổng quan</a></li>
+                <li><a onclick="switchTab('orders', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> Lịch sử Đơn hàng</a></li>
+                <li><a onclick="switchTab('address', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Sổ địa chỉ</a></li>
+                <li><a onclick="switchTab('settings', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Cài đặt</a></li>
+                <li style="margin-top: 1rem; border-top: 1px solid #f3f4f6; padding-top: 1rem;"><a onclick="logout()" style="color: #ef4444;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Đăng xuất</a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="profile-main">
+            
+            <!-- TONG QUAN TAB -->
+            <div id="overview" class="tab-content active">
+                <div class="main-header">
+                    <h2>Xin chào, <span class="text-gold" id="welcomeNameDisplay">Khách VIP</span></h2>
+                    <p>Chào mừng trở lại trung tâm đặc quyền của riêng bạn.</p>
+                </div>
+
+                <!-- Thẻ Thành viên Điện tử & Khung Cảnh (Glassmorphism Environment) -->
+                <div class="card-environment">
+                    <div class="digital-card" id="digitalMemberCard">
+                        <div class="card-header">
+                            <span class="card-logo">Lux<span>Perfume</span></span>
+                            <span class="card-tier-badge" id="cardTierBadge">VVIP</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="card-name" id="cardOwnerName">NGUYỄN VĂN A</div>
+                            <div class="card-id">ID: LUX-883921</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulator (Dev/QA Tool) -->
+                <div class="simulator-box">
+                    <h4>[Kiểm thử] Trình Đổi Hạng Thành Viên:</h4>
+                    <p style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.75rem;">Thay đổi giá trị Dropdown dưới đây để kích hoạt Auto-class & thay đổi màu sắc Thẻ điện tử bằng JavaScript Client-side.</p>
+                    <select id="tierSimulator" onchange="simulateTierUpdate()">
+                        <option value="new">Hạng Mới (Normal Glassmorphism)</option>
+                        <option value="loyal">Hạng Thân Thiết (Glass)</option>
+                        <option value="vip">Hạng VIP (Animated Gold Gradient)</option>
+                        <option value="vvip" selected>Hạng VVIP (Glossy Black Mộc mạc sang trọng)</option>
+                    </select>
+                </div>
+
+                <!-- TỦ NƯỚC HOA CỦA TÔI -->
+                <div class="scent-wardrobe">
+                    <div class="wardrobe-header">
+                        <h3>Tủ Nước Hoa Của Tôi</h3>
+                        <p>Dấu ấn cá nhân được phân tích qua những lựa chọn mùi hương trước đây của bạn.</p>
+                    </div>
+                    
+                    <div class="wardrobe-grid">
+                        <div class="chart-box">
+                            <canvas id="scentRadarChart"></canvas>
+                        </div>
+                        <div class="recommend-box">
+                            <h4 style="margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: var(--gold-primary); letter-spacing: 0.1em;">Gợi ý từ Chuyên gia</h4>
+                            <p style="font-size: 0.95rem; color: var(--jet-black, #111111); margin-bottom: 1.5rem;" id="recommendationMessage">Đang tải phân tích...</p>
+                            
+                            <div class="recommend-list" id="recommendationList">
+                                <!-- Điền tự động bằng JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTHER TABS -->
+            <div id="orders" class="tab-content">
+                <div class="main-header" style="margin-bottom: 2rem;">
+                    <h2>Lịch sử Đơn hàng</h2>
+                    <p>Theo dõi các đơn hàng và quá trình giao nhận toàn cầu.</p>
+                </div>
+                
+                <div class="order-list">
+                    <!-- Order 1: Delivered (Thành công) -->
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <div class="order-info-item">
+                                    <span class="order-label">Mã đơn hàng</span>
+                                    <span class="order-value">#LUX-99384</span>
+                                </div>
+                                <div class="order-info-item">
+                                    <span class="order-label">Ngày mua</span>
+                                    <span class="order-value">15 Tháng 10, 2025</span>
+                                </div>
+                                <div class="order-info-item">
+                                    <span class="order-label">Tổng tiền</span>
+                                    <span class="order-total">6,200,000₫</span>
+                                </div>
+                            </div>
+                            <div class="order-actions">
+                                <button class="btn-buy-again" onclick="alert('Đã thêm 1 x [Oud Éternel] vào Giỏ hàng!')">Mua Lại</button>
+                            </div>
+                        </div>
+                        
+                        <div class="order-body">
+                            <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=200" alt="Oud Éternel" class="order-thumbnail">
+                            <div class="order-product-details">
+                                <div class="order-product-name">Oud Éternel</div>
+                                <div class="order-product-variant">Dung tích: 100ml | Số lượng: 1</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline -->
+                        <div class="order-timeline">
+                            <div class="timeline-progress" style="width: 86%;"></div>
+                            
+                            <div class="timeline-step completed">
+                                <div class="step-icon">✔</div>
+                                <span class="step-label">Chờ xác nhận</span>
+                            </div>
+                            <div class="timeline-step completed">
+                                <div class="step-icon">✔</div>
+                                <span class="step-label">Đang đóng gói</span>
+                            </div>
+                            <div class="timeline-step completed">
+                                <div class="step-icon">✔</div>
+                                <span class="step-label">Đang giao</span>
+                            </div>
+                            <div class="timeline-step completed">
+                                <div class="step-icon">✔</div>
+                                <span class="step-label">Thành công</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order 2: In Progress (Đang giao) -->
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <div class="order-info-item">
+                                    <span class="order-label">Mã đơn hàng</span>
+                                    <span class="order-value">#LUX-10294</span>
+                                </div>
+                                <div class="order-info-item">
+                                    <span class="order-label">Ngày mua</span>
+                                    <span class="order-value">20 Tháng 3, 2026</span>
+                                </div>
+                                <div class="order-info-item">
+                                    <span class="order-label">Tổng tiền</span>
+                                    <span class="order-total">4,500,000₫</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-body">
+                            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=200" alt="Rose Mystique" class="order-thumbnail">
+                            <div class="order-product-details">
+                                <div class="order-product-name">Rose Mystique</div>
+                                <div class="order-product-variant">Dung tích: 50ml | Số lượng: 1</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline -->
+                        <div class="order-timeline">
+                            <div class="timeline-progress" style="width: 55%;"></div>
+                            
+                            <div class="timeline-step completed">
+                                <div class="step-icon">✔</div>
+                                <span class="step-label">Chờ xác nhận</span>
+                            </div>
+                            <div class="timeline-step completed">
+                                <div class="step-icon">✔</div>
+                                <span class="step-label">Đang đóng gói</span>
+                            </div>
+                            <div class="timeline-step completed"> <!-- Active/Current step -->
+                                <div class="step-icon">🚚</div>
+                                <span class="step-label">Đang giao</span>
+                            </div>
+                            <div class="timeline-step"> <!-- Pending -->
+                                <div class="step-icon"></div>
+                                <span class="step-label">Thành công</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="address" class="tab-content">
+                <div class="main-header">
+                    <h2>Sổ địa chỉ</h2>
+                    <p>Quản lý danh bạ nhận hàng.</p>
+                </div>
+                <button class="btn-primary" style="padding: 0.8rem 1.5rem;">Thêm Địa Chỉ Mới</button>
+            </div>
+
+            <div id="settings" class="tab-content">
+                <div class="main-header">
+                    <h2>Cài đặt Tài khoản</h2>
+                    <p>Bảo mật, Thông báo và Tùy chọn Nhận Quà Đặc Quyền.</p>
+                </div>
+                
+                <div class="setting-card">
+                    <h4 style="margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--jet-black, #111111);">Hộp quà Đặc quyền Nâng hạng</h4>
+                    <p style="font-size: 0.95rem; color: #6b7280; margin-bottom: 1.5rem; line-height: 1.5;">Lux Perfume vô cùng trân trọng sự đồng hành của bạn. Nhận ngay quà tặng độc bản dành riêng cho thiết lập hồ sơ VIP.</p>
+                    <button class="btn-primary" style="padding: 0.8rem 1.75rem; border-radius: 6px;" onclick="openGiftModal()">Nhận Quà Nâng Hạng</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- UPGRADE GIFT MODAL -->
+    <div id="giftModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeGiftModal()">×</button>
+            <div class="modal-header" style="text-align: center; margin-bottom: 1.5rem;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold-primary); margin-bottom: 0.5rem;">Chúc mừng Thăng hạng VIP!</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Hộp quà Độc Bản đang trên đường được giao đến tay bạn.</p>
+            </div>
+            
+            <div class="modal-body">
+                <div style="background: #fdfdfd; border: 1px dashed #d1d5db; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--jet-black, #111111);">Chia sẻ Khoảnh khắc Xa xỉ</h4>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem; line-height: 1.6;">Lan tỏa sự kiêu hãnh của bạn bằng cách quay một đoạn clip ngắn "đập hộp" chiếc Thẻ Điện Tử hoặc hộp quà vật lý và đăng lên Tiktok/Reels. Dùng mẫu Cap độc quyền dưới đây để khẳng định đẳng cấp VIP.</p>
+                    
+                    <div class="script-box" style="position: relative;">
+                        <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #9ca3af; margin-bottom: 0.5rem; font-weight: 500;">Kịch bản gợi ý (Tạo tự động)</label>
+                        <textarea id="giftScriptText" readonly style="width: 100%; height: 160px; padding: 1.25rem; border: 1px solid #e5e7eb; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #374151; background: #ffffff; resize: none; line-height: 1.6;">✨ Chạm đến đỉnh cao của khứu giác cùng chiếc thẻ đặc quyền từ Lux Perfume! Không chỉ là hương thơm, đây là một tuyên ngôn phong cách của riêng mình. Có ai đang tò mò bên trong hộp quà thăng hạng VVIP này chứa bí mật xa xỉ gì không? 🖤🥂
+
+Cảm ơn đã tham gia</textarea>
+                        <button onclick="copyGiftScript()" id="copyScriptBtn" style="position: absolute; bottom: 12px; right: 12px; background: var(--jet-black, #111111); color: var(--gold-primary); border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.2s;">Copy nhanh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Routing functionality
+        function switchTab(tabId, element) {
+            // Remove active state
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+            
+            // Add active state to target
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // ---------- LOGIC KIỂM SOÁT THẺ ĐIỆN TỬ ----------
+        function setMemberTier(tier) {
+            const card = document.getElementById('digitalMemberCard');
+            const badge = document.getElementById('cardTierBadge');
+            
+            // Xóa tất cả các hiệu ứng hạng cao cấp hiện có
+            card.classList.remove('tier-vip', 'tier-vvip');
+            
+            if(tier === 'new') {
+                badge.innerText = 'THÀNH VIÊN MỚI';
+            } else if(tier === 'loyal') {
+                badge.innerText = 'THÂN THIẾT';
+            } else if(tier === 'vip') {
+                badge.innerText = 'VIP';
+                card.classList.add('tier-vip'); // Kích hoạt border Gradient vàng quay vòng (animation)
+            } else if(tier === 'vvip') {
+                badge.innerText = 'VVIP';
+                card.classList.add('tier-vvip'); // Kích hoạt chất liệu Đen Bóng sang trọng
+            }
+        }
+
+        function simulateTierUpdate() {
+            const val = document.getElementById('tierSimulator').value;
+            setMemberTier(val);
+        }
+
+        // ---------- LOGIC TỦ NƯỚC HOA - RADAR CHART ----------
+        function initScentWardrobe() {
+            // Dữ liệu Mock History
+            const scentData = {
+                'Hương Gỗ (Woody)': 85,
+                'Hương Hoa (Floral)': 35,
+                'Cam Chanh (Citrus)': 15,
+                'Phương Đông (Oriental)': 60,
+                'Thảo Mộc (Aromatic)': 25
+            };
+            
+            const labels = Object.keys(scentData);
+            const dataValues = Object.values(scentData);
+            
+            // Tìm Gu Chủ Đạo
+            let maxVal = -1;
+            let dominantScent = '';
+            for(let i=0; i<labels.length; i++){
+                if(dataValues[i] > maxVal) { maxVal = dataValues[i]; dominantScent = labels[i]; }
+            }
+            
+            // Vẽ Biểu Đồ Radar Chart
+            const ctx = document.getElementById('scentRadarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Mức độ tương thích (%)',
+                        data: dataValues,
+                        backgroundColor: 'rgba(212, 175, 55, 0.25)', // Phủ màu Gold
+                        borderColor: '#d4af37', // Viền Gold
+                        pointBackgroundColor: '#111111',
+                        pointBorderColor: '#d4af37',
+                        pointHoverBackgroundColor: '#ffffff',
+                        pointHoverBorderColor: '#d4af37',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.08)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.08)' },
+                            pointLabels: {
+                                font: { family: "'Inter', sans-serif", size: 12, weight: 500 },
+                                color: '#111111'
+                            },
+                            ticks: { display: false, min: 0, max: 100 }
+                        }
+                    },
+                    plugins: { legend: { display: false }, tooltip: {
+                        backgroundColor: '#111111',
+                        titleFont: { family: "'Inter', sans-serif" },
+                        bodyFont: { family: "'Inter', sans-serif" }
+                    } }
+                }
+            });
+            
+            // Render Gợi Ý Sản Phẩm
+            document.getElementById('recommendationMessage').innerText = `Dựa trên dải phân tích cho thấy bạn là một tín đồ của Tầng "${dominantScent}" cực kỳ cá tính. Chúng tôi thiết kế riêng cho bạn bộ sưu tập sau:`;
+            
+            const recList = document.getElementById('recommendationList');
+            // Mock Data Recommend
+            const recommendedProducts = [
+                { name: 'Oud Suprême', desc: 'Bản sắc nguyên thủy của trầm hương và gia vị phương Đông cổ đại, gợi cảm và táo bạo dũng mãnh.', price: '7,500,000₫', img: 'https://images.unsplash.com/photo-1595837691512-fbab8e17ddb4?auto=format&fit=crop&q=80&w=200' },
+                { name: 'Santal Majuscule', desc: 'Hương thơm nồng đượm của tuyết tùng, trầm hương đỏ, hòa quyện với cacao xông khói ấm áp.', price: '5,800,000₫', img: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=200' }
+            ];
+            
+            let html = '';
+            recommendedProducts.forEach(p => {
+                html += `
+                    <div class="rec-card" onclick="window.location.href='product.html'">
+                        <img src="${p.img}" alt="${p.name}" class="rec-img">
+                        <div class="rec-info">
+                            <div class="rec-name">${p.name}</div>
+                            <div class="rec-desc">${p.desc}</div>
+                            <div class="rec-price">${p.price}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            recList.innerHTML = html;
+        }
+
+        // ---------- MODAL QUÀ NÂNG HẠNG ----------
+        function openGiftModal() {
+            document.getElementById('giftModal').classList.add('active');
+        }
+
+        function closeGiftModal() {
+            document.getElementById('giftModal').classList.remove('active');
+            // Reset button text smoothly
+            setTimeout(() => {
+                const copyBtn = document.getElementById('copyScriptBtn');
+                copyBtn.innerText = 'Copy nhanh';
+                copyBtn.style.backgroundColor = 'var(--jet-black, #111111)';
+                copyBtn.style.color = 'var(--gold-primary)';
+            }, 300);
+        }
+
+        function copyGiftScript() {
+            const copyText = document.getElementById('giftScriptText');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // Dành cho Mobile
+
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const copyBtn = document.getElementById('copyScriptBtn');
+                copyBtn.innerText = 'Đã Copy ✔';
+                copyBtn.style.backgroundColor = '#10b981'; // Green success
+                copyBtn.style.color = '#ffffff';
+            }).catch(err => {
+                console.error('Lỗi khi copy: ', err);
+            });
+        }
+
+        // Logic Log out (Hủy bỏ Mock Backend Auth Data)
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = '../index.html';
+        }
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if(!isLoggedIn) {
+                // If not logged in, mock Guest data
+                document.getElementById('welcomeNameDisplay').innerText = 'Tài Khoản Khách';
+                document.getElementById('cardOwnerName').innerText = 'GUEST ACCOUNT';
+            }
+            
+            // Bootstrap the simulator with default value
+            const initialTier = document.getElementById('tierSimulator').value;
+            setMemberTier(initialTier);
+
+            // Init Chart
+            initScentWardrobe();
+        });
+    </script>
+</body>
+</html>

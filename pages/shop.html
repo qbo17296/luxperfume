@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Khám phá toàn bộ bộ sưu tập nước hoa niche độc bản từ Lux Perfume.">
+    <title>Cửa Hàng | Lux Perfume</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        /* Specific Styles for Shop Page */
+        .page-header {
+            padding: calc(var(--spacing-xl) + 80px) 0 var(--spacing-xl);
+            background: linear-gradient(to bottom, var(--surface-light), var(--bg-color));
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .shop-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-xl) 0;
+            align-items: start;
+        }
+
+        /* Sidebar Filters */
+        .filter-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-group {
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .filter-title {
+            font-size: var(--text-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .filter-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .filter-label:hover {
+            color: var(--gold-dark);
+        }
+
+        /* Checkbox styling */
+        .filter-label input[type="checkbox"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--text-secondary);
+            background-color: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .filter-label input[type="checkbox"]:checked {
+            border-color: var(--gold-primary);
+            background-color: var(--gold-primary);
+        }
+
+        .filter-label input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Shop Top Bar */
+        .shop-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .sort-select {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-body);
+            font-size: var(--text-sm);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .sort-select:focus {
+            border-color: var(--gold-primary);
+        }
+
+        .sort-select option {
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .shop-layout {
+                grid-template-columns: 1fr;
+            }
+            .filter-sidebar {
+                position: static;
+                margin-bottom: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header class="navbar glass-nav" id="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="text-gold">Lux</span> Perfume
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html">Trang chủ</a>
+                <a href="shop.html" class="active">Cửa hàng</a>
+                <a href="../index.html#featured">Bộ sưu tập</a>
+                <a href="#footer">Liên hệ</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="icon-btn" aria-label="Tìm kiếm">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                </button>
+                <a href="cart.html" class="icon-btn cart-btn" aria-label="Giỏ hàng">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+            <button class="mobile-menu-btn icon-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Page Header -->
+        <div class="page-header fade-up">
+            <div class="container">
+                <h1 class="section-title">Nghệ Thuật Mùi Hương</h1>
+                <p class="section-desc">Mỗi chai nước hoa là một câu chuyện riêng, chờ đợi bạn khám phá và khoác lên mình.</p>
+            </div>
+        </div>
+
+        <!-- Shop Content -->
+        <section class="container shop-layout">
+            <!-- Sidebar Filters -->
+            <aside class="filter-sidebar fade-up delay-1">
+                <div class="filter-group">
+                    <h3 class="filter-title">Danh Mục</h3>
+                    <div class="filter-list">
+                        <label class="filter-label"><input type="checkbox" value="niche"> Niche Perfumes</label>
+                        <label class="filter-label"><input type="checkbox" value="designer"> Designer Collection</label>
+                        <label class="filter-label"><input type="checkbox" value="limited"> Limited Edition</label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3 class="filter-title">Giới Tính</h3>
+                    <div class="filter-list">
+                        <label class="filter-label"><input type="checkbox" value="unisex"> Unisex</label>
+                        <label class="filter-label"><input type="checkbox" value="pour-homme"> Pour Homme</label>
+                        <label class="filter-label"><input type="checkbox" value="pour-femme"> Pour Femme</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Shop Area -->
+            <div class="shop-main">
+                <div class="shop-topbar fade-up delay-1">
+                    <p class="text-secondary"><span id="product-count">8</span> sản phẩm</p>
+                    <select class="sort-select" id="sort-select">
+                        <option value="featured">Nổi bật nhất</option>
+                        <option value="newest">Mới cập nhật</option>
+                        <option value="price-asc">Giá: Thấp đến Cao</option>
+                        <option value="price-desc">Giá: Cao xuống Thấp</option>
+                    </select>
+                </div>
+
+                <div class="product-grid" id="shop-grid">
+                    <!-- Sản phẩm sẽ được render bằng Javascript (shop.js) thay cho HTML tĩnh -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="../index.html" class="logo text-gold" style="font-size: var(--text-2xl);">Lux</a>
+                <p class="footer-desc">Đánh thức cảm xúc qua từng nốt hương sang trọng nhất.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Khám phá</h4>
+                <ul>
+                    <li><a href="../index.html">Trang chủ</a></li>
+                    <li><a href="shop.html">Cửa hàng</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Chính sách mua hàng</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Giao hàng & Đổi trả</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Liên hệ</h4>
+                <p>Email: contact@luxperfume.vn</p>
+                <p>Hotline: 1800 8888</p>
+                <p>Địa chỉ: 123 Đồng Khởi, Quận 1, TP. HCM</p>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <p>&copy; 2026 Lux Perfume. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/products.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/cart.js"></script>
+    <script src="../assets/js/shop.js"></script>
+</body>
+</html>

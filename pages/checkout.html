@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán An Toàn | Lux Perfume</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../assets/css/reset.css">
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        body {
+            background-color: #f9fafb;
+            color: var(--text-primary);
+        }
+        
+        .checkout-layout {
+            display: flex;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-layout {
+                flex-direction: column-reverse;
+                gap: 2rem;
+            }
+        }
+
+        /* ----- LEFT COLUMN: Form Data (60%) ----- */
+        .checkout-left {
+            flex: 1.5;
+            background: #ffffff;
+            padding: 2.5rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .checkout-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--jet-black, #111111);
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .min-group { position: relative; }
+        .min-group label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #9ca3af;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .min-input {
+            width: 100%;
+            padding: 0.875rem 0;
+            border: none;
+            border-bottom: 1px solid #d1d5db;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color var(--transition-fast);
+            color: var(--jet-black, #111111);
+        }
+        .min-input:focus {
+            outline: none;
+            border-bottom-color: var(--gold-primary);
+            box-shadow: 0 1px 0 0 var(--gold-primary); /* Simulate thick border bottom */
+        }
+        .min-input::placeholder { color: #d1d5db; }
+
+        /* Custom Payment Method Radio Buttons */
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .payment-option {
+            position: relative;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            background: #ffffff;
+        }
+        .payment-option:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+        .payment-option input[type="radio"] {
+            display: none; /* Hide default radio */
+        }
+        /* The Custom Circle */
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        /* Checked States */
+        .payment-option input[type="radio"]:checked + .radio-custom {
+            border-color: var(--gold-primary);
+        }
+        .payment-option input[type="radio"]:checked + .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px; height: 10px;
+            background: var(--gold-primary);
+            border-radius: 50%;
+        }
+        /* Active Option Box styling using CSS :has */
+        .payment-option:has(input[type="radio"]:checked) {
+            border-color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.03); /* Soft gold overlay */
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.08);
+        }
+        .payment-label-text {
+            font-weight: 500;
+            color: var(--jet-black, #111111);
+            font-size: 0.95rem;
+        }
+        .payment-icon {
+            margin-left: auto;
+            color: #9ca3af;
+        }
+        .payment-option:has(input[type="radio"]:checked) .payment-icon {
+            color: var(--gold-primary);
+        }
+
+        /* ----- RIGHT COLUMN: Order Summary (40%) ----- */
+        .checkout-right {
+            flex: 1;
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid #e5e7eb;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-items {
+            max-height: 45vh;
+            overflow-y: auto;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding-right: 0.5rem;
+        }
+        /* Scrollbar aesthetics */
+        .summary-items::-webkit-scrollbar { width: 5px; }
+        .summary-items::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .summary-items::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        .summary-items::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+        .summary-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+        .item-img-container {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #fdfdfd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .item-img-container img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        /* Notification badge style for quantity */
+        .item-qty-badge {
+            position: absolute;
+            top: -8px; right: -8px;
+            background: var(--jet-black, #111111);
+            color: #ffffff;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .item-info { flex: 1; }
+        .item-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--jet-black, #111111); }
+        .item-price { color: var(--gold-primary); font-size: 0.95rem; font-weight: 600; }
+
+        /* Math Lines */
+        .calc-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .calc-line.total {
+            border-top: 1px dashed #e5e7eb;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            font-size: 1.25rem;
+            color: var(--jet-black, #111111);
+            font-weight: 600;
+        }
+        .total-price {
+            font-size: 1.5rem;
+            color: var(--gold-primary);
+        }
+
+        .btn-checkout-submit {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--gold-primary);
+            color: var(--jet-black, #111111);
+            border: none;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-checkout-submit:hover {
+            background: #e5b839; /* Đậm hơn gold một chút */
+            color: var(--jet-black, #111111);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* Empty Cart State */
+        .empty-checkout {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        .empty-checkout h3 { font-family: 'Playfair Display', serif; margin-bottom: 1rem; font-size: 1.5rem; color: var(--jet-black, #111111); }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <!-- Minimal Header for Checkout Friction Reduction -->
+    <header class="navbar" style="background: #ffffff; border-bottom: 1px solid #e5e7eb; height: 80px; display: flex; align-items: center;">
+        <div class="container nav-container" style="justify-content: center;">
+            <a href="../index.html" class="logo" style="margin: 0; padding: 0;">
+                <span class="text-gold">Lux</span> Perfume
+            </a>
+            <i style="position: absolute; right: 2rem; font-size: 0.85rem; color: #9ca3af;" class="hide-on-mobile">🔒 Kênh Thanh toán Xương sống SSL bảo mật</i>
+        </div>
+    </header>
+
+    <main class="checkout-layout">
+        
+        <!-- CỘT TRÁI: FORM LIÊN HỆ & THANH TOÁN (60%) -->
+        <div class="checkout-left">
+            <h2 class="checkout-section-title">Thông tin Giao hàng</h2>
+            
+            <form id="checkoutForm" novalidate>
+                <div class="form-grid">
+                    <div class="min-group full-width">
+                        <label>Họ và Tên</label>
+                        <input type="text" id="chkName" class="min-input" required placeholder="Nhập họ tên người nhận hàng">
+                    </div>
+                    
+                    <div class="min-group">
+                        <label>Email liên hệ</label>
+                        <input type="email" id="chkEmail" class="min-input" required placeholder="Dùng để gửi email xác nhận và thẻ bảo hành">
+                    </div>
+                    
+                    <div class="min-group">
+                        <label>Số điện thoại</label>
+                        <input type="tel" id="chkPhone" class="min-input" required placeholder="Liên lạc khi nhân viên giao hàng">
+                    </div>
+                    
+                    <div class="min-group full-width">
+                        <label>Địa chỉ chi tiết</label>
+                        <input type="text" id="chkAddress" class="min-input" required placeholder="Ví dụ: Tòa nhà Landmark 81, số 720A Điện Biên Phủ">
+                    </div>
+                    
+                    <div class="min-group full-width">
+                        <label>Tỉnh / Thành phố</label>
+                        <input type="text" id="chkCity" class="min-input" required placeholder="Thành phố bạn sinh sống">
+                    </div>
+                </div>
+
+                <h2 class="checkout-section-title">Phương thức Thanh toán</h2>
+                
+                <div class="payment-methods">
+                    <label class="payment-option">
+                        <input type="radio" name="paymentOption" value="cod" checked>
+                        <div class="radio-custom"></div>
+                        <span class="payment-label-text">COD - Thanh toán tiền mặt khi nhận hàng</span>
+                        <svg class="payment-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                    </label>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="paymentOption" value="bank">
+                        <div class="radio-custom"></div>
+                        <span class="payment-label-text">Chuyển khoản Ngân hàng (Mã QR hiện sau khi đặt)</span>
+                        <svg class="payment-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    </label>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="paymentOption" value="card">
+                        <div class="radio-custom"></div>
+                        <span class="payment-label-text">Thẻ Tín dụng / Ghi nợ Quốc tế (Visa, MasterCard)</span>
+                        <svg class="payment-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <!-- CỘT PHẢI: ORDER SUMMARY (40% STICKY) -->
+        <div class="checkout-right">
+            <h2 class="checkout-section-title" style="font-size: 1.25rem;">Tóm tắt đơn hàng</h2>
+            
+            <div id="checkoutSummaryWrapper">
+                <!-- Vùng hiển thị Món hàng -->
+                <div class="summary-items" id="summaryItemsList">
+                    <div style="text-align: center; padding: 2rem 0; color: #9ca3af;">Đang tải dữ liệu...</div>
+                </div>
+                
+                <!-- Khu vực Mã Giảm Giá -->
+                <div class="discount-section" style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed #e5e7eb;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="discountInput" class="min-input" style="flex: 1; border: 1px solid #d1d5db; border-radius: 6px; padding: 0.75rem 1rem; text-transform: uppercase;" placeholder="Nhập mã giảm giá">
+                        <button type="button" id="applyDiscountBtn" style="background: var(--jet-black, #111111); color: #ffffff; border: none; padding: 0 1.25rem; border-radius: 6px; font-weight: 500; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s;">Áp dụng</button>
+                    </div>
+                    <div id="discountMsg" style="font-size: 0.85rem; margin-top: 0.75rem; display: none;"></div>
+                </div>
+                
+                <div class="calc-line">
+                    <span>Tạm tính</span>
+                    <span id="summarySubtotal" style="color: var(--jet-black, #111111); font-weight: 500;">0₫</span>
+                </div>
+                <!-- Phí vận chuyển -->
+                <div class="calc-line">
+                    <span>Phí giao hàng</span>
+                    <span id="summaryShipping" style="color: var(--jet-black, #111111); font-weight: 500;">30,000₫</span>
+                </div>
+                <!-- Chiết khấu (Mặc định ẩn) -->
+                <div class="calc-line" id="discountLine" style="display: none;">
+                    <span>Chiết khấu <span id="discountLabel" style="color: #10b981; font-weight: 600;">(LUXVIP)</span></span>
+                    <span id="discountValue" style="color: #10b981; font-weight: 600;">-0₫</span>
+                </div>
+                
+                <div class="calc-line total">
+                    <span>Tổng cộng</span>
+                    <div style="text-align: right;">
+                        <div id="summaryOldTotal" style="font-size: 1rem; color: #9ca3af; text-decoration: line-through; display: none; margin-bottom: 0.2rem;"></div>
+                        <span class="total-price" id="summaryTotal">0₫</span>
+                    </div>
+                </div>
+                
+                <button type="submit" form="checkoutForm" class="btn-checkout-submit">Hoàn tất Đặt hàng</button>
+            </div>
+            
+        </div>
+
+    </main>
+
+    <script src="../assets/js/checkout.js"></script>
+</body>
+</html>

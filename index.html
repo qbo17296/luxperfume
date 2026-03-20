@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lux Perfume - Khám phá bộ sưu tập nước hoa niche cao cấp và độc bản.">
+    <title>Lux Perfume | Tinh Hoa Nước Hoa Cao Cấp</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header class="navbar glass-nav" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="text-gold">Lux</span> Perfume
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Trang chủ</a>
+                <a href="pages/shop.html">Cửa hàng</a>
+                <a href="#featured">Bộ sưu tập</a>
+                <a href="#footer">Liên hệ</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="icon-btn" aria-label="Tìm kiếm">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                </button>
+                <a href="pages/cart.html" class="icon-btn cart-btn" aria-label="Giỏ hàng">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="cart-count">0</span>
+                </a>
+                
+                <!-- Khu vực Auth Thay Thế -->
+                <div id="auth-section" style="display: flex; align-items: center;">
+                    <a href="pages/login.html" class="btn-login-outline" id="loginBtn">Đăng nhập</a>
+                    <div id="userProfile" onclick="window.location.href='pages/profile.html'" style="display: none; align-items: center; gap: 0.5rem; color: var(--gold-primary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="hide-on-mobile">Xin chào, Khách VIP</span>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn icon-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg img-reveal">
+                <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=2000" alt="Luxury Perfume Bottle" loading="eager">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="container hero-content">
+                <span class="subtitle text-gold fade-up">Bản Giao Hưởng Mùi Hương</span>
+                <h1 class="hero-title fade-up delay-1">Đánh thức<br>mọi giác quan</h1>
+                <p class="hero-desc fade-up delay-2">Khám phá bộ sưu tập nước hoa độc bản được chế tác thủ công bởi các nghệ nhân điều hương hàng đầu thế giới.</p>
+                <div class="hero-cta fade-up delay-3">
+                    <a href="pages/shop.html" class="btn-primary">Khám phá Bộ sưu tập</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Signature Collections Section -->
+        <section id="featured" class="section featured-section">
+            <div class="container">
+                <div class="section-header text-center fade-up">
+                    <span class="subtitle text-gold">Most Loved</span>
+                    <h2 class="section-title">Best Sellers</h2>
+                    <p class="section-desc">Những tuyệt tác mang dấu ấn vượt thời gian, là sự kết tinh của nguyên liệu quý hiếm và nghệ thuật chế tác đỉnh cao.</p>
+                </div>
+                
+                <div class="product-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card fade-up">
+                        <div class="product-img-wrapper img-reveal">
+                            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=600" alt="Rose Mystique" class="product-img">
+                            <div class="product-action-overlay">
+                                <button class="btn-primary btn-full" onclick="addToCart({id: 'p1', name: 'Rose Mystique', price: 4500000, image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=200', qty: 1}); alert('Đã thêm Rose Mystique')">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-tags"><span class="tag">Niche</span><span class="tag">Unisex</span></div>
+                            <h3 class="product-name">Rose Mystique</h3>
+                            <p class="product-notes">Hồng Đan Mạch • Trầm Hương • Hổ Phách</p>
+                            <p class="product-price">4,500,000₫</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card fade-up delay-1">
+                        <div class="product-img-wrapper img-reveal">
+                            <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" alt="Oud Éternel" class="product-img">
+                            <div class="product-action-overlay">
+                                <button class="btn-primary btn-full" onclick="addToCart({id: 'p2', name: 'Oud Éternel', price: 6200000, image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=200', qty: 1}); alert('Đã thêm Oud Éternel')">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-tags"><span class="tag">Bestseller</span></div>
+                            <h3 class="product-name">Oud Éternel</h3>
+                            <p class="product-notes">Gỗ Đàn Hương • Vani • Xạ Hương</p>
+                            <p class="product-price">6,200,000₫</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card fade-up delay-2">
+                        <div class="product-img-wrapper img-reveal">
+                            <img src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" alt="Midnight Citrus" class="product-img">
+                            <div class="product-action-overlay">
+                                <button class="btn-primary btn-full" onclick="addToCart({id: 'p3', name: 'Midnight Citrus', price: 3800000, image: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=200', qty: 1}); alert('Đã thêm Midnight Citrus')">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-tags"><span class="tag">New</span></div>
+                            <h3 class="product-name">Midnight Citrus</h3>
+                            <p class="product-notes">Cam Bergamot • Oải Hương • Cỏ Hương Bài</p>
+                            <p class="product-price">3,800,000₫</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 4 -->
+                    <div class="product-card fade-up delay-3">
+                        <div class="product-img-wrapper img-reveal">
+                            <img src="https://images.unsplash.com/photo-1615397323147-38605c0fb126?auto=format&fit=crop&q=80&w=600" alt="Velvet Iris" class="product-img">
+                            <div class="product-action-overlay">
+                                <button class="btn-primary btn-full" onclick="addToCart({id: 'p4', name: 'Velvet Iris', price: 5900000, image: 'https://images.unsplash.com/photo-1615397323147-38605c0fb126?w=200', qty: 1}); alert('Đã thêm Velvet Iris')">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-tags"><span class="tag">Limited</span></div>
+                            <h3 class="product-name">Velvet Iris</h3>
+                            <p class="product-notes">Hoa Diên Vĩ • Cacao • Gỗ Tuyết Tùng</p>
+                            <p class="product-price">5,900,000₫</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center" style="margin-top: var(--spacing-xl);">
+                    <a href="pages/shop.html" class="btn-outline">Xem Toàn Bộ Cửa Hàng</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Story Parallax Section -->
+        <section class="story-section glass-panel">
+            <div class="container story-inner">
+                <div class="story-content fade-up">
+                    <h2 class="section-title">Nghệ thuật<br>pha chế độc bản</h2>
+                    <p class="section-desc">Mỗi giọt hương của Lux là một hành trình kỳ diệu. Chúng tôi chỉ sử dụng những nguyên liệu tinh giản và đắt giá nhất từ Grasse, Pháp để tạo ra những bản phối âm hoàn hảo của cảm xúc.</p>
+                </div>
+                <div class="story-image img-reveal fade-up delay-1">
+                    <img src="https://images.unsplash.com/photo-1622313627725-3b951478546b?auto=format&fit=crop&q=80&w=800" alt="Maison de Parfum">
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="logo text-gold" style="font-size: var(--text-2xl);">Lux</a>
+                <p class="footer-desc">Đánh thức cảm xúc qua từng nốt hương sang trọng nhất.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Khám phá</h4>
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="pages/shop.html">Cửa hàng</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Chính sách mua hàng</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Giao hàng & Đổi trả</a></li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Liên hệ</h4>
+                <p>Email: contact@luxperfume.vn</p>
+                <p>Hotline: 1800 8888</p>
+                <p>Địa chỉ: 123 Đồng Khởi, Quận 1, TP. HCM</p>
+                <div class="footer-social" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <a href="#" aria-label="Facebook" class="text-gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                    <a href="#" aria-label="Instagram" class="text-gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <p>&copy; 2026 Lux Perfume. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/cart.js"></script>
+    <script>
+        // Check Login state via LocalStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const loginBtn = document.getElementById('loginBtn');
+            const userProfile = document.getElementById('userProfile');
+
+            if (isLoggedIn === 'true') {
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (userProfile) userProfile.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>

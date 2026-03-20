@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Đơn Hàng | Admin Lux Perfume</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo">
+                    <span class="text-gold">Lux</span> Admin
+                </a>
+                <button class="toggle-btn" id="close-sidebar" aria-label="Đóng sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span class="nav-text">Tổng quan</span>
+                </a>
+                <a href="orders.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <span class="nav-text">Quản lý Đơn hàng</span>
+                </a>
+                <a href="products.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                    <span class="nav-text">Quản lý Sản phẩm</span>
+                </a>
+                <a href="customers.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span class="nav-text">Khách hàng</span>
+                </a>
+                <a href="marketing.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h4l2-9 5 18 3-9h6"></path></svg>
+                    <span class="nav-text">Chiến dịch Marketing</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <button class="toggle-btn" id="open-sidebar" aria-label="Mở sidebar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin+Lux&background=d4af37&color=fff" alt="Admin" class="avatar">
+                        <span class="user-name">Quản trị viên</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1 class="page-title">Quản lý Đơn hàng</h1>
+                    <p class="text-secondary">Theo dõi, xét duyệt và xử lý các đơn đặt hàng nước hoa.</p>
+                </div>
+
+                <!-- Orders Table Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Table Header Actions (Search & Filter) -->
+                        <div class="table-header-actions">
+                            <div class="search-form">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-secondary"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" class="search-input" id="search-order" placeholder="Tìm theo Mã đơn hoặc Tên khách...">
+                            </div>
+                            <!-- Future filters could go here -->
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="table-responsive" style="min-height: 400px;">
+                            <table class="admin-table" id="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Đơn</th>
+                                        <th>Khách Hàng</th>
+                                        <th>Sản Phẩm</th>
+                                        <th>Tổng Tiền</th>
+                                        <th>Ngày Đặt</th>
+                                        <th>Trạng Thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Rows will be inserted here by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript cho Quản lý đơn hàng -->
+    <script>
+        // Toggle Sidebar
+        const sidebar = document.getElementById('sidebar');
+        document.getElementById('open-sidebar').addEventListener('click', () => sidebar.classList.add('active'));
+        document.getElementById('close-sidebar').addEventListener('click', () => sidebar.classList.remove('active'));
+
+        // Mock Order Data
+        const orders = [
+            { id: '#LP001', customer: 'Nguyễn Văn A', product: 'Rose Mystique (x1)', total: 4500000, date: '2026-03-20', status: 'pending' },
+            { id: '#LP002', customer: 'Trần Thị B', product: 'Oud Éternel (x2)', total: 12400000, date: '2026-03-19', status: 'shipping' },
+            { id: '#LP003', customer: 'Lê Tùng C', product: 'Midnight Citrus (x1)', total: 3800000, date: '2026-03-18', status: 'completed' },
+            { id: '#LP004', customer: 'Phạm Hoàng D', product: 'Velvet Iris (x3)', total: 17700000, date: '2026-03-15', status: 'cancelled' },
+            { id: '#LP005', customer: 'Ngô Thanh E', product: 'Aqua Celestia (x1)', total: 3500000, date: '2026-03-14', status: 'completed' }
+        ];
+
+        // Mapping trạng thái sang CSS Class và Label
+        const statusConfig = {
+            'pending': { class: 'status-pending', label: 'Chờ xử lý', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+            'shipping': { class: 'status-shipping', label: 'Đang giao', icon: 'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4' },
+            'completed': { class: 'status-completed', label: 'Đã hoàn thành', icon: 'M5 13l4 4L19 7' },
+            'cancelled': { class: 'status-cancelled', label: 'Đã hủy', icon: 'M6 18L18 6M6 6l12 12' }
+        };
+
+        const tbody = document.querySelector('#orders-table tbody');
+
+        // Render Table function
+        function renderTable(data) {
+            tbody.innerHTML = '';
+            if(data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 2rem;">Không tìm thấy đơn hàng nào</td></tr>';
+                return;
+            }
+
+            data.forEach((order, index) => {
+                const config = statusConfig[order.status];
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 500;">${order.id}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.product}</td>
+                    <td style="font-weight: 500;" class="text-gold">${new Intl.NumberFormat('vi-VN').format(order.total)}₫</td>
+                    <td>${order.date}</td>
+                    <td>
+                        <div class="status-dropdown">
+                            <span class="badge ${config.class}" onclick="toggleDropdown(${index}, event)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="${config.icon}"></path></svg>
+                                ${config.label}
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </span>
+                            <div class="dropdown-menu" id="dropdown-${index}">
+                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'pending')"><span class="badge status-pending">Chờ xử lý</span></div>
+                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'shipping')"><span class="badge status-shipping">Đang giao</span></div>
+                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'completed')"><span class="badge status-completed">Đã hoàn thành</span></div>
+                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'cancelled')"><span class="badge status-cancelled">Đã hủy</span></div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        renderTable(orders);
+
+        // Logic Dropdown
+        let activeDropdown = null;
+        function toggleDropdown(index, event) {
+            event.stopPropagation();
+            const currentMenu = document.getElementById(`dropdown-${index}`);
+            
+            // Close old active dropdown
+            if(activeDropdown && activeDropdown !== currentMenu) {
+                activeDropdown.classList.remove('show');
+            }
+            
+            currentMenu.classList.toggle('show');
+            if(currentMenu.classList.contains('show')) {
+                activeDropdown = currentMenu;
+            } else {
+                activeDropdown = null;
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            if(activeDropdown) {
+                activeDropdown.classList.remove('show');
+                activeDropdown = null;
+            }
+        });
+
+        // Thay đổi trạng thái
+        function changeStatus(orderId, newStatus) {
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if(orderIndex !== -1) {
+                orders[orderIndex].status = newStatus;
+                // Gọi lại render để giao diện tự cập nhật dựa trên Data source! 
+                // Cần apply lại rule search hiện tại nếu có
+                const searchTerm = document.getElementById('search-order').value.toLowerCase();
+                const filtered = orders.filter(o => o.id.toLowerCase().includes(searchTerm) || o.customer.toLowerCase().includes(searchTerm));
+                renderTable(filtered);
+            }
+        }
+
+        // Search logic
+        document.getElementById('search-order').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filteredData = orders.filter(o => 
+                o.id.toLowerCase().includes(term) || 
+                o.customer.toLowerCase().includes(term)
+            );
+            renderTable(filteredData);
+        });
+
+    </script>
+</body>
+</html>

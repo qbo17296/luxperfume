@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập Admin | Lux Perfume</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="login-page">
+
+    <div class="login-wrapper">
+        <div class="card login-card">
+            <div class="login-header text-center">
+                <a href="../index.html" class="logo" style="font-size: 2rem;">
+                    <span class="text-gold">Lux</span> Admin
+                </a>
+                <p class="text-secondary mt-2">Vui lòng đăng nhập để tiếp tục</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Tên đăng nhập hoặc Email</label>
+                    <input type="text" id="username" class="form-input" placeholder="Nhập admin" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" id="password" class="form-input" placeholder="Nhập admin" required>
+                </div>
+                
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox"> Ghi nhớ đăng nhập
+                    </label>
+                    <a href="#" class="forgot-password text-gold">Quên mật khẩu?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-full" style="justify-content: center; height: 44px;">Đăng Nhập Khám Phá</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification (Hidden by default) -->
+    <div id="toast" class="toast-notification">
+        <div class="toast-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+        </div>
+        <div class="toast-message">Sai thông tin đăng nhập</div>
+    </div>
+
+    <!-- JavaScript Xử Lý Đăng Nhập -->
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const toast = document.getElementById('toast');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Chặn tải lại trang
+            
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            // Logic mô phỏng cứng: admin / admin
+            if (user === 'admin' && pass === 'admin') {
+                // Đăng nhập đúng: Chuyển hướng
+                window.location.href = 'dashboard.html';
+            } else {
+                // Đăng nhập sai: Hiển thị Toast
+                showToast();
+            }
+        });
+
+        function showToast() {
+            toast.classList.add('show');
+            
+            // Tự động ẩn Toast sau 3 giây
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

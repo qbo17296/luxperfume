@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose Mystique - Lux Perfume</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        .product-detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+            padding: calc(var(--spacing-xl) + 80px) 0 var(--spacing-xxl);
+            align-items: start;
+        }
+
+        /* Gallery Styles */
+        .product-gallery {
+            position: sticky;
+            top: 100px;
+        }
+
+        .main-image-wrapper {
+            margin-bottom: var(--spacing-sm);
+            aspect-ratio: 4/5;
+            background-color: var(--surface-color);
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .thumb {
+            width: 80px;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+        }
+
+        .thumb:hover, .thumb.active {
+            opacity: 1;
+            border-color: var(--gold-primary);
+        }
+
+        /* Product Info Styles */
+        .breadcrumb {
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .breadcrumb a {
+            transition: color var(--transition-fast);
+        }
+        .breadcrumb a:hover { color: var(--gold-primary); }
+
+        .product-title {
+            font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .product-price {
+            font-size: var(--text-2xl);
+            color: var(--gold-primary);
+            margin-bottom: var(--spacing-md);
+            font-weight: 500;
+        }
+
+        .product-description {
+            font-size: var(--text-base);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-light);
+            line-height: 1.8;
+        }
+
+        /* Scent Notes */
+        .notes-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .note-item {
+            text-align: center;
+        }
+
+        .note-title {
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .note-value {
+            font-family: var(--font-heading);
+            font-size: var(--text-lg);
+            color: var(--text-primary);
+        }
+
+        /* Add to Cart Actions */
+        .add-to-cart-form {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-light);
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 52px;
+            color: var(--text-primary);
+            font-size: var(--text-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color var(--transition-fast);
+            cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+
+        .qty-btn:hover { color: var(--gold-primary); }
+
+        .qty-input {
+            width: 50px;
+            height: 52px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            text-align: center;
+            font-size: var(--text-base);
+            outline: none;
+        }
+
+        .add-btn {
+            flex-grow: 1;
+        }
+
+        /* Specs */
+        .specs-list {
+            list-style: none;
+        }
+
+        .specs-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: var(--text-sm);
+        }
+
+        .specs-label { color: var(--text-secondary); }
+
+        /* Product Tabs */
+        .product-tabs {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-sm);
+        }
+        .tabs-header {
+            display: flex;
+            gap: 2rem;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            font-size: var(--text-base);
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 0.5rem 0 1rem;
+            cursor: pointer;
+            position: relative;
+            transition: color var(--transition-fast);
+        }
+        .tab-btn:hover {
+            color: var(--text-primary);
+        }
+        .tab-btn.active {
+            color: var(--gold-primary);
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0; right: 0;
+            height: 2px;
+            background-color: var(--gold-primary);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .product-detail-layout { grid-template-columns: 1fr; }
+            .product-gallery { position: static; }
+            .tabs-header { gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar glass-nav" id="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="text-gold">Lux</span> Perfume
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html">Trang chủ</a>
+                <a href="shop.html">Cửa hàng</a>
+                <a href="../index.html#featured">Bộ sưu tập</a>
+                <a href="#footer">Liên hệ</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="cart.html" class="icon-btn cart-btn" aria-label="Giỏ hàng">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+            <button class="mobile-menu-btn icon-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="product-detail-layout">
+            <!-- Gallery Section -->
+            <div class="product-gallery fade-up">
+                <div class="main-image-wrapper img-reveal">
+                    <img id="main-image" src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800" alt="Rose Mystique">
+                </div>
+                <div class="thumbnails">
+                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=200" class="thumb active" onclick="changeImage(this)">
+                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=200" class="thumb" onclick="changeImage(this)">
+                    <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=200" class="thumb" onclick="changeImage(this)">
+                </div>
+            </div>
+
+            <!-- Product Info Section -->
+            <div class="product-info-panel fade-up delay-1">
+                <div class="breadcrumb">
+                    <a href="../index.html">Trang chủ</a> / <a href="shop.html">Niche Perfumes</a> / Rose Mystique
+                </div>
+                
+                <h1 class="product-title" id="product-name">Rose Mystique</h1>
+                <p class="product-price" id="product-price" data-price="4500000">4,500,000₫</p>
+                
+                <div class="product-description">
+                    <p>Khơi nguồn từ những cánh hồng Đan Mạch kiêu kỳ rực rỡ dưới ánh nắng ban mai, hòa quyện cùng sự sâu lắng, bí ẩn của Trầm hương. Rose Mystique là tuyên ngôn của sự quyến rũ vượt thời gian, là nụ hôn say đắm đọng lại trên làn da.</p>
+                </div>
+
+                <div class="notes-list">
+                    <div class="note-item">
+                        <span class="note-title">Hương Đầu</span>
+                        <span class="note-value">Tiêu Hồng</span>
+                    </div>
+                    <div class="note-item">
+                        <span class="note-title">Hương Giữa</span>
+                        <span class="note-value">Hồng Damask</span>
+                    </div>
+                    <div class="note-item">
+                        <span class="note-title">Hương Cuối</span>
+                        <span class="note-value">Trầm Hương</span>
+                    </div>
+                </div>
+
+                <div class="add-to-cart-form">
+                    <div class="quantity-selector">
+                        <button type="button" class="qty-btn" id="qty-minus">−</button>
+                        <input type="number" class="qty-input" id="qty-input" value="1" min="1" max="10" readonly>
+                        <button type="button" class="qty-btn" id="qty-plus">+</button>
+                    </div>
+                    <button type="button" class="btn-primary add-btn" id="add-to-cart-btn">Thêm Vào Giỏ</button>
+                </div>
+
+                <div class="product-tabs">
+                    <div class="tabs-header">
+                        <button type="button" class="tab-btn active" onclick="switchTab('specs', this)">Chi tiết & Đặc điểm</button>
+                        <button type="button" class="tab-btn" onclick="switchTab('media', this)">Tài nguyên Truyền thông</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="tab-specs">
+                        <ul class="specs-list">
+                            <li><span class="specs-label">Thương hiệu</span> <span>Lux Exclusif</span></li>
+                            <li><span class="specs-label">Nhóm hương</span> <span>Floral Woody (Hồng & Gỗ)</span></li>
+                            <li><span class="specs-label">Lưu hương</span> <span>Rất bền (Trên 12 giờ)</span></li>
+                            <li><span class="specs-label">Độ tỏa hương</span> <span>Xa (Bán kính 2 mét)</span></li>
+                            <li><span class="specs-label">Dung tích</span> <span>50ml Extrait de Parfum</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" id="tab-media">
+                        <p class="text-secondary" style="margin-bottom: 1rem; font-size: 0.875rem;">Kịch bản review Video/Tiktok dành riêng cho Affiliates & KOC/KOL.</p>
+                        <textarea id="review-script" style="width: 100%; height: 160px; padding: 1rem; border: 1px solid var(--border-light); background: var(--surface-color); color: var(--text-primary); border-radius: 4px; font-family: inherit; line-height: 1.6; resize: vertical; margin-bottom: 1rem; outline: none;" readonly></textarea>
+                        
+                        <button type="button" class="btn-primary" onclick="copyScript()" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy Kịch Bản
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer Dummy -->
+    <footer id="footer" class="footer">
+        <div class="container text-center">
+            <a href="../index.html" class="logo text-gold" style="font-size: var(--text-xl);">Lux</a>
+            <p class="footer-bottom mt-3">&copy; 2026 Lux Perfume.</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/cart.js"></script>
+    <script>
+        // Inline script cho Gallery và form
+        function changeImage(element) {
+            document.getElementById('main-image').src = element.src;
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Re-trigger animation on main image wrapper
+            const wrapper = document.querySelector('.main-image-wrapper');
+            wrapper.classList.remove('img-reveal');
+            void wrapper.offsetWidth; // trigger reflow
+            wrapper.classList.add('img-reveal');
+        }
+
+        const qtyInput = document.getElementById('qty-input');
+        document.getElementById('qty-minus').addEventListener('click', () => {
+            if(qtyInput.value > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
+        });
+        document.getElementById('qty-plus').addEventListener('click', () => {
+            if(qtyInput.value < 10) qtyInput.value = parseInt(qtyInput.value) + 1;
+        });
+
+        // Add to Cart integration
+        document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+            const productName = document.getElementById('product-name').innerText;
+            const productPrice = parseInt(document.getElementById('product-price').getAttribute('data-price'));
+            const imageStr = document.getElementById('main-image').src;
+            const quantity = parseInt(qtyInput.value);
+
+            if(typeof addToCart === 'function') {
+                addToCart({
+                    id: 'rose-mystique-01',
+                    name: productName,
+                    price: productPrice,
+                    image: imageStr,
+                    qty: quantity
+                });
+            }
+        });
+
+        // Tabs Logic
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Generate Media Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const productName = document.getElementById('product-name').innerText;
+            const scriptTemplate = `Wow! Mình vừa mới trải nghiệm thử chai nước hoa ${productName} từ thương hiệu Lux Perfume.
+Mùi hương thực sự quá ấn tượng, toát lên vẻ sang trọng và cuốn hút ngay từ những nốt hương đầu tiên. Nếu bạn đang tìm kiếm một chai nước hoa đẳng cấp khiến ai lướt qua cũng phải ngoái nhìn, ${productName} chắc chắn là sự lựa chọn chân ái nhé.
+
+- theo dõi, thả tim, lưu video, bình luận,...
+- Cảm ơn đã xem`;
+
+            document.getElementById('review-script').value = scriptTemplate;
+        });
+
+        // Copy Script
+        function copyScript() {
+            const textarea = document.getElementById('review-script');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // Mobile
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                alert('Đã copy kịch bản truyền thông!');
+            }).catch(err => {
+                console.error('Không thể copy: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

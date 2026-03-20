@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biểu đồ Thống Kê | Admin Lux Perfume</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo">
+                    <span class="text-gold">Lux</span> Admin
+                </a>
+                <button class="toggle-btn" id="close-sidebar" aria-label="Đóng sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span class="nav-text">Tổng quan</span>
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <span class="nav-text">Quản lý Đơn hàng</span>
+                </a>
+                <a href="products.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                    <span class="nav-text">Quản lý Sản phẩm</span>
+                </a>
+                <a href="customers.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span class="nav-text">Khách hàng</span>
+                </a>
+                <a href="marketing.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h4l2-9 5 18 3-9h6"></path></svg>
+                    <span class="nav-text">Chiến dịch Marketing</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <button class="toggle-btn" id="open-sidebar" aria-label="Mở sidebar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div class="topbar-right">
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin+Lux&background=d4af37&color=fff" alt="Admin" class="avatar">
+                        <span class="user-name">Quản trị viên</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h1 class="page-title">Báo Cáo Doanh Thu Điển Hình</h1>
+                    <p class="text-secondary">Theo dõi biểu đồ doanh thu theo tháng và tỷ trọng các dòng nước hoa bán ra.</p>
+                </div>
+
+                <!-- 4 Stats Cards (Same as index.html overview) -->
+                <div class="stats-grid">
+                    <div class="card stat-card">
+                        <div class="stat-info">
+                            <h3>Doanh thu ngày</h3>
+                            <p class="stat-value">24,500,000₫</p>
+                            <span class="stat-trend positive">↑ 12% so với hôm qua</span>
+                        </div>
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-info">
+                            <h3>Đơn hàng mới</h3>
+                            <p class="stat-value">18</p>
+                            <span class="stat-trend positive">↑ 5% so với hôm qua</span>
+                        </div>
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        </div>
+                    </div>
+                    <!-- Simplified to 2 cards to emphasize charts, or keep all 4. Let's keep 4. -->
+                    <div class="card stat-card">
+                        <div class="stat-info">
+                            <h3>Khách hàng mới</h3>
+                            <p class="stat-value">42</p>
+                            <span class="stat-trend neutral">- 0% so với hôm qua</span>
+                        </div>
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                    </div>
+                    <div class="card stat-card">
+                        <div class="stat-info">
+                            <h3>Sản phẩm sắp hết</h3>
+                            <p class="stat-value text-danger">2</p>
+                            <span class="stat-trend negative">Cần nhập kho ngay</span>
+                        </div>
+                        <div class="stat-icon text-danger">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <!-- Line Chart Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Doanh thu Bán hàng 6 Tháng Gần Nhất</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doughnut Chart Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Tỷ Trọng Dòng Nước Hoa</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="productLineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js Library via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- JavaScript Initialization -->
+    <script>
+        // Toggle Sidebar
+        const sidebar = document.getElementById('sidebar');
+        document.getElementById('open-sidebar').addEventListener('click', () => sidebar.classList.add('active'));
+        document.getElementById('close-sidebar').addEventListener('click', () => sidebar.classList.remove('active'));
+
+        // Chart Theme Defaults
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#6b7280';
+        
+        // --- 1. Line Chart (Revenue) ---
+        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        
+        // Gradient for Line Chart under-fill
+        const gradientRevenue = ctxRevenue.createLinearGradient(0, 0, 0, 320);
+        gradientRevenue.addColorStop(0, 'rgba(212, 175, 55, 0.4)'); // Gold fading out
+        gradientRevenue.addColorStop(1, 'rgba(212, 175, 55, 0.0)');
+
+        const revenueChart = new Chart(ctxRevenue, {
+            type: 'line',
+            data: {
+                labels: ['T10', 'T11', 'T12', 'T01', 'T02', 'T03'],
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: [120000000, 150000000, 320000000, 240000000, 180000000, 290000000], // Mock Data
+                    borderColor: '#d4af37', // Gold primary
+                    backgroundColor: gradientRevenue,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#d4af37',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.4 // Smooth curve
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 2000, // Smooth load 2 seconds
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        padding: 12,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        callbacks: {
+                            label: function(context) {
+                                let value = context.parsed.y;
+                                return new Intl.NumberFormat('vi-VN').format(value) + ' ₫';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f3f4f6', drawBorder: false },
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000000) + 'Tr'; // Show in Millions
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false, drawBorder: false }
+                    }
+                }
+            }
+        });
+
+        // --- 2. Doughnut Chart (Product Lines) ---
+        const ctxProductLine = document.getElementById('productLineChart').getContext('2d');
+        
+        const productLineChart = new Chart(ctxProductLine, {
+            type: 'doughnut',
+            data: {
+                labels: ['Dành cho Nữ', 'Dành cho Nam', 'Unisex'],
+                datasets: [{
+                    data: [55, 25, 20], // Percentages
+                    backgroundColor: [
+                        '#d4af37', // Nữ (Gold)
+                        '#111827', // Nam (Jet Black)
+                        '#e5e7eb'  // Unisex (Gray)
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutBounce', // Nice bounce effect on doughnut rings
+                    animateScale: true,
+                    animateRotate: true
+                },
+                cutout: '70%', // Make the ring thinner and more elegant
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            font: { size: 13 }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        padding: 10,
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Tự động đẩy Toast cảnh báo tồn kho sau 1 giây
+        setTimeout(() => {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification show';
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <div class="toast-message">Cảnh báo: Có sản phẩm sắp hết hàng cần bổ sung</div>
+            `;
+            document.body.appendChild(toast);
+            
+            // Xóa sau 5 giây
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500); // Đợi CSS transition chạy xong
+            }, 5000);
+        }, 1200);
+
+    </script>
+</body>
+</html>

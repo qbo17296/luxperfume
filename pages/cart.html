@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng | Lux Perfume</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        .cart-page-header {
+            padding: calc(var(--spacing-xl) + 80px) 0 var(--spacing-xl);
+            background: linear-gradient(to bottom, var(--surface-light), var(--bg-color));
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-xl) 0;
+            align-items: start;
+        }
+
+        /* Cart Items Section */
+        .cart-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        /* Cart Headers */
+        .cart-table-header {
+            display: grid;
+            grid-template-columns: 3fr 1fr 1fr 40px;
+            gap: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr 1fr 40px;
+            gap: var(--spacing-md);
+            align-items: center;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .cart-item-img {
+            width: 80px;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            background-color: var(--surface-color);
+        }
+
+        .item-info-name {
+            font-family: var(--font-heading);
+            font-size: var(--text-lg);
+            margin-bottom: 0.2rem;
+            color: var(--text-primary);
+        }
+
+        .item-price {
+            color: var(--text-secondary);
+            font-size: var(--text-sm);
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-light);
+            width: fit-content;
+        }
+
+        .qty-control button {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .qty-control button:hover {
+            color: var(--gold-primary);
+        }
+
+        .qty-control input {
+            width: 30px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .item-subtotal {
+            font-weight: 500;
+            color: var(--gold-primary);
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: var(--text-xl);
+            transition: color var(--transition-fast);
+        }
+
+        .delete-btn:hover { color: #ef4444; }
+
+        /* Order Summary Section */
+        .cart-summary {
+            background-color: var(--surface-color);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border-light);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-title {
+            font-family: var(--font-heading);
+            font-size: var(--text-2xl);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+            font-size: var(--text-sm);
+        }
+
+        .summary-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-light);
+            font-size: var(--text-lg);
+            font-family: var(--font-heading);
+            color: var(--text-primary);
+        }
+
+        .checkout-btn {
+            margin-top: var(--spacing-lg);
+        }
+
+        .empty-cart-msg {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 900px) {
+            .cart-layout { grid-template-columns: 1fr; }
+            .cart-table-header { display: none; }
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            .cart-item > div:nth-child(2) { grid-column: 2; grid-row: 1; }
+            .cart-item .qty-control { grid-column: 2; grid-row: 2; }
+            .cart-item .item-subtotal { grid-column: 2; grid-row: 3; }
+            .cart-item .delete-btn { grid-column: 1; grid-row: 1; justify-self: start; align-self: start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar glass-nav" id="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="text-gold">Lux</span> Perfume
+            </a>
+            <nav class="nav-links">
+                <a href="../index.html">Trang chủ</a>
+                <a href="shop.html">Cửa hàng</a>
+                <a href="../index.html#featured">Bộ sưu tập</a>
+                <a href="#footer">Liên hệ</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="cart.html" class="icon-btn cart-btn active" aria-label="Giỏ hàng">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+            <button class="mobile-menu-btn icon-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </header>
+    
+    <main>
+        <div class="cart-page-header fade-up">
+            <div class="container">
+                <h1 class="section-title">Giỏ Hàng Của Bạn</h1>
+            </div>
+        </div>
+
+        <section class="container cart-layout">
+            <!-- Left: Cart Items -->
+            <div class="cart-items-container fade-up delay-1">
+                <div class="cart-table-header">
+                    <div>Sản phẩm</div>
+                    <div>Số lượng</div>
+                    <div>Tạm tính</div>
+                    <div></div>
+                </div>
+                
+                <!-- Items list rendered via cart.js -->
+                <div id="cart-list">
+                    <!-- Example rendering from cart.js will go here -->
+                </div>
+            </div>
+
+            <!-- Right: Order Summary -->
+            <aside class="cart-summary fade-up delay-2">
+                <h3 class="summary-title">Tổng quan đơn hàng</h3>
+                
+                <div class="summary-row">
+                    <span>Tạm tính</span>
+                    <span id="summary-subtotal">0₫</span>
+                </div>
+                <div class="summary-row">
+                    <span>Phí vận chuyển</span>
+                    <span>Miễn phí</span>
+                </div>
+                
+                <div class="summary-total-row">
+                    <span>Tổng cộng</span>
+                    <span id="summary-total" class="text-gold">0₫</span>
+                </div>
+
+                <a href="checkout.html" class="btn-primary btn-full checkout-btn" style="text-align: center; text-decoration: none; display: inline-block;">Tiến Hành Thanh Toán</a>
+            </aside>
+        </section>
+    </main>
+    
+    <!-- Footer Dummy -->
+    <footer id="footer" class="footer" style="margin-top: var(--spacing-xxl);">
+        <div class="container text-center">
+            <a href="../index.html" class="logo text-gold" style="font-size: var(--text-xl);">Lux</a>
+            <p class="footer-bottom mt-3">&copy; 2026 Lux Perfume.</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/cart.js"></script>
+</body>
+</html>
