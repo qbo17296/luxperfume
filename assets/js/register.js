@@ -1,5 +1,5 @@
 import { app, db } from './firebase-config.js';
-import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
 import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const auth = getAuth(app);
@@ -182,5 +182,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         }
     });
+
+    // Google Sign In integration
+    const btnGoogle = document.getElementById('btn-google-register');
+    if (btnGoogle) {
+        btnGoogle.addEventListener('click', async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                // Lưu dữ liệu vào Firestore nếu là User mới
+                const userDocRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userDocRef);
+                
+                if (!userSnap.exists()) {
+                    await setDoc(userDocRef, {
+                        uid: user.uid,
+                        email: user.email,
+                        username: user.email.split('@')[0], 
+                        fullname: user.displayName || user.email.split('@')[0],
+                        phone: user.phoneNumber || 'Chưa cập nhật',
+                        favoriteScent: 'Chưa cập nhật',
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'welcome.html';
+            } catch (error) {
+                console.error("Lỗi đăng ký Google:", error);
+                alert("Không thể kết nối với Google: " + error.message);
+            }
+        });
+    }
 
 });

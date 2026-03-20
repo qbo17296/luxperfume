@@ -1,6 +1,6 @@
 import { app, db } from './firebase-config.js';
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
+import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const auth = getAuth(app);
 
@@ -107,4 +107,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     }
+
+    // Google Sign In integration
+    const btnGoogle = document.getElementById('btn-google-login');
+    if (btnGoogle) {
+        btnGoogle.addEventListener('click', async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                // Đảm bảo user có dữ liệu trong Firestore
+                const userDocRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userDocRef);
+                
+                if (!userSnap.exists()) {
+                    await setDoc(userDocRef, {
+                        uid: user.uid,
+                        email: user.email,
+                        username: user.email.split('@')[0], 
+                        fullname: user.displayName || user.email.split('@')[0],
+                        phone: user.phoneNumber || 'Chưa cập nhật',
+                        favoriteScent: 'Chưa cập nhật',
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = '../index.html';
+            } catch (error) {
+                console.error("Lỗi đăng nhập Google:", error);
+                alert("Đăng nhập thất bại: " + error.message);
+            }
+        });
+    }
+
 });
