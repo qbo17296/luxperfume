@@ -1,41 +1,8 @@
-// Dữ liệu Khách hàng giả lập (Có thêm lịch sử mua hàng)
-const customersData = [
-    { 
-        id: 'KH001', name: 'Nguyễn Văn Quang', email: 'quangnv_luxury@gmail.com', phone: '0901 234 567', orders: 24, spent: 34500000,
-        history: [
-            { date: '15/03/2026', item: 'Oud Éternel', price: 6200000, family: 'Woody' },
-            { date: '01/02/2026', item: 'Midnight Citrus', price: 3800000, family: 'Citrus' },
-            { date: '10/12/2025', item: 'Amber Glow', price: 4100000, family: 'Oriental' },
-            { date: '05/11/2025', item: 'Oud Éternel', price: 6200000, family: 'Woody' },
-            { date: '20/09/2025', item: 'Santál Royal', price: 5500000, family: 'Woody' }
-        ]
-    },
-    { 
-        id: 'KH002', name: 'Đặng Mai Phương', email: 'maiphuong.dang@yahoo.com', phone: '0987 654 321', orders: 9, spent: 16400000,
-        history: [
-            { date: '20/03/2026', item: 'Rose Mystique', price: 4500000, family: 'Floral' },
-            { date: '14/01/2026', item: 'Velvet Iris', price: 5900000, family: 'Floral' },
-            { date: '02/11/2025', item: 'Jasmine Noir', price: 6000000, family: 'Floral' }
-        ]
-    },
-    { 
-        id: 'KH003', name: 'Lê Hoàng Tâm', email: 'tamle99@hotmail.com', phone: '0933 445 566', orders: 4, spent: 6500000,
-        history: [
-            { date: '10/02/2026', item: 'Rose Mystique', price: 4500000, family: 'Floral' },
-            { date: '01/12/2025', item: 'Discovery Set', price: 2000000, family: 'Mixed' }
-        ]
-    },
-    { id: 'KH004', name: 'Trần Cẩm Nhung', email: 'nhungtran.beauty@gmail.com', phone: '0912 345 678', orders: 0, spent: 0, history: [] },
-    { 
-        id: 'KH005', name: 'Vương Vĩnh Phát', email: 'phatvv_ceo@gmail.com', phone: '0909 999 888', orders: 50, spent: 85000000,
-        history: [
-            { date: '19/03/2026', item: 'Oud Éternel', price: 6200000, family: 'Woody' },
-            { date: '10/03/2026', item: 'Rose Mystique', price: 4500000, family: 'Floral' },
-            { date: '01/03/2026', item: 'Velvet Iris', price: 5900000, family: 'Floral' },
-            { date: '15/02/2026', item: 'Amber Glow', price: 4100000, family: 'Oriental' }
-        ]
-    }
-];
+import { db } from '../../assets/js/firebase-config.js';
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+// Global data scope
+let customersData = [];
 
 // Hàm lấy Avatar
 const getTierAvatar = (name) => `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f4f6f8&color=d4af37&font-size=0.4&bold=true`;
@@ -71,7 +38,7 @@ const scentNames = {
 // Panel Control Functions
 let currentOpenedCustomerId = null;
 
-function openCustomerPanel(customerId) {
+window.openCustomerPanel = function(customerId) {
     const customer = customersData.find(c => c.id === customerId);
     if(!customer) return;
 
@@ -149,7 +116,7 @@ function openCustomerPanel(customerId) {
     }, 100);
 }
 
-function closeCustomerPanel() {
+window.closeCustomerPanel = function() {
     document.getElementById('customer-panel-overlay').classList.remove('show');
     document.getElementById('customer-panel').classList.remove('show');
     
@@ -162,7 +129,7 @@ function closeCustomerPanel() {
 }
 
 // Logic Tạo Kịch Bản Video Tri Ân
-function generateTributeVideo() {
+window.generateTributeVideo = function() {
     if(!currentOpenedCustomerId) return;
     const customer = customersData.find(c => c.id === currentOpenedCustomerId);
     
@@ -193,7 +160,7 @@ Chúng mình cực kỳ ấn tượng vì anh/chị đã nhiều lần tin tư�
     container.style.display = 'flex';
 }
 
-function copyTributeScript() {
+window.copyTributeScript = function() {
     const textarea = document.getElementById('tribute-script-textarea');
     textarea.select();
     navigator.clipboard.writeText(textarea.value).then(() => {
@@ -316,10 +283,82 @@ function renderCustomerChart() {
     });
 }
 
-// Build list on load
+// Lấy dữ liệu thật từ Firestore thay vì load mảng giả
+async function loadCustomersAndOrders() {
+    try {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding: 2rem;">Đang tải dữ liệu khách hàng từ máy chủ...</td></tr>';
+        
+        // Load đồng thời Users và Orders
+        const [usersSnap, ordersSnap] = await Promise.all([
+            getDocs(collection(db, "users")),
+            getDocs(collection(db, "orders"))
+        ]);
+
+        const allUsers = {};
+        
+        // Ánh xạ Users
+        usersSnap.forEach(doc => {
+            const data = doc.data();
+            allUsers[doc.id] = {
+                id: data.username ? data.username.toUpperCase() : doc.id.substring(0,6).toUpperCase(),
+                uid: doc.id,
+                name: data.fullName || data.username || 'Thành Viên Ẩn Danh',
+                email: data.email || 'N/A',
+                phone: data.phone || 'N/A',
+                orders: 0,
+                spent: 0,
+                history: []
+            };
+        });
+
+        // Loop orders data để cộng dồn cho User tương ứng
+        ordersSnap.forEach(doc => {
+            const data = doc.data();
+            const uid = data.uid;
+            
+            // Note: Guest orders without an ID or an unmapped ID won't appear under users
+            if(uid && allUsers[uid]) {
+                allUsers[uid].orders += 1;
+                allUsers[uid].spent += (data.billing ? data.billing.total : 0);
+                
+                if(data.items && Array.isArray(data.items)) {
+                    data.items.forEach(item => {
+                        let dateStr = 'Unknown';
+                        if(data.createdAt) {
+                            dateStr = data.createdAt.toDate().toLocaleDateString('vi-VN');
+                        }
+                        
+                        // Fake một nhóm họ hương (vì data sản phẩm trong giỏ lúc đó ko lưu nhánh mồi)
+                        // Trong hệ thống thật, family được pull từ Product docs.
+                        let simulatedFamily = 'Mixed';
+                        if(item.name.includes('Rose') || item.name.includes('Iris')) simulatedFamily = 'Floral';
+                        else if(item.name.includes('Oud') || item.name.includes('Santal')) simulatedFamily = 'Woody';
+                        else if(item.name.includes('Citrus')) simulatedFamily = 'Citrus';
+
+                        allUsers[uid].history.push({
+                            date: dateStr,
+                            item: item.name,
+                            price: item.price * item.quantity,
+                            family: simulatedFamily
+                        });
+                    });
+                }
+            }
+        });
+
+        customersData = Object.values(allUsers);
+        
+        renderCustomersTable(customersData);
+        renderCustomerChart(); 
+    } catch (err) {
+        console.error("Lỗi lấy dữ liệu Khách hàng:", err);
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger" style="padding: 2rem;">Lỗi lấy dữ liệu. Vui lòng F5.</td></tr>';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    renderCustomersTable(customersData);
-    renderCustomerChart();
+    // Gọi hàm fetch dữ liệu thực
+    loadCustomersAndOrders();
 });
 
 // Search integration

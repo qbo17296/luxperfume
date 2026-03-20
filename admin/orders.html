@@ -108,20 +108,16 @@
     </div>
 
     <!-- JavaScript cho Quản lý đơn hàng -->
-    <script>
+    <script type="module">
+        import { db } from '../../assets/js/firebase-config.js';
+        import { collection, getDocs, doc, updateDoc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
         // Toggle Sidebar
         const sidebar = document.getElementById('sidebar');
         document.getElementById('open-sidebar').addEventListener('click', () => sidebar.classList.add('active'));
         document.getElementById('close-sidebar').addEventListener('click', () => sidebar.classList.remove('active'));
 
-        // Mock Order Data
-        const orders = [
-            { id: '#LP001', customer: 'Nguyễn Văn A', product: 'Rose Mystique (x1)', total: 4500000, date: '2026-03-20', status: 'pending' },
-            { id: '#LP002', customer: 'Trần Thị B', product: 'Oud Éternel (x2)', total: 12400000, date: '2026-03-19', status: 'shipping' },
-            { id: '#LP003', customer: 'Lê Tùng C', product: 'Midnight Citrus (x1)', total: 3800000, date: '2026-03-18', status: 'completed' },
-            { id: '#LP004', customer: 'Phạm Hoàng D', product: 'Velvet Iris (x3)', total: 17700000, date: '2026-03-15', status: 'cancelled' },
-            { id: '#LP005', customer: 'Ngô Thanh E', product: 'Aqua Celestia (x1)', total: 3500000, date: '2026-03-14', status: 'completed' }
-        ];
+        // Real Orders Data Array
+        let orders = [];
 
         // Mapping trạng thái sang CSS Class và Label
         const statusConfig = {
@@ -159,10 +155,10 @@
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </span>
                             <div class="dropdown-menu" id="dropdown-${index}">
-                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'pending')"><span class="badge status-pending">Chờ xử lý</span></div>
-                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'shipping')"><span class="badge status-shipping">Đang giao</span></div>
-                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'completed')"><span class="badge status-completed">Đã hoàn thành</span></div>
-                                <div class="dropdown-item" onclick="changeStatus('${order.id}', 'cancelled')"><span class="badge status-cancelled">Đã hủy</span></div>
+                                <div class="dropdown-item" onclick="changeStatus('${order.docId}', 'pending')"><span class="badge status-pending">Chờ xử lý</span></div>
+                                <div class="dropdown-item" onclick="changeStatus('${order.docId}', 'shipping')"><span class="badge status-shipping">Đang giao</span></div>
+                                <div class="dropdown-item" onclick="changeStatus('${order.docId}', 'completed')"><span class="badge status-completed">Đã hoàn thành</span></div>
+                                <div class="dropdown-item" onclick="changeStatus('${order.docId}', 'cancelled')"><span class="badge status-cancelled">Đã hủy</span></div>
                             </div>
                         </div>
                     </td>
@@ -175,7 +171,7 @@
 
         // Logic Dropdown
         let activeDropdown = null;
-        function toggleDropdown(index, event) {
+        window.toggleDropdown = function(index, event) {
             event.stopPropagation();
             const currentMenu = document.getElementById(`dropdown-${index}`);
             
@@ -201,17 +197,72 @@
         });
 
         // Thay đổi trạng thái
-        function changeStatus(orderId, newStatus) {
-            const orderIndex = orders.findIndex(o => o.id === orderId);
+        window.changeStatus = async function(docId, newStatus) {
+            const orderIndex = orders.findIndex(o => o.docId === docId);
             if(orderIndex !== -1) {
+                // Update Local UI
                 orders[orderIndex].status = newStatus;
+                
+                // Update Firestore
+                try {
+                    const orderRef = doc(db, "orders", docId);
+                    await updateDoc(orderRef, { status: newStatus });
+                } catch (err) {
+                    console.error("Lỗi cập nhật Firestore:", err);
+                    alert("Cập nhật trạng thái thất bại.");
+                }
+
                 // Gọi lại render để giao diện tự cập nhật dựa trên Data source! 
-                // Cần apply lại rule search hiện tại nếu có
                 const searchTerm = document.getElementById('search-order').value.toLowerCase();
                 const filtered = orders.filter(o => o.id.toLowerCase().includes(searchTerm) || o.customer.toLowerCase().includes(searchTerm));
                 renderTable(filtered);
             }
+        };
+
+        // Lấy dữ liệu thực từ Firestore
+        async function loadOrders() {
+            try {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 2rem;">Đang tải đơn hàng mới nhất...</td></tr>';
+                const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                
+                orders = [];
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const idDisplay = "#" + docSnap.id.substring(0, 6).toUpperCase();
+                    
+                    let productDesc = 'Không xác định';
+                    if(data.items && data.items.length > 0) {
+                        productDesc = data.items.length === 1 
+                            ? `${data.items[0].name} (x${data.items[0].quantity})`
+                            : `${data.items.length} SP (Gồm ${data.items[0].name}...)`;
+                    }
+
+                    let dateStr = 'Unknown';
+                    if(data.createdAt) {
+                        // Support Firebase Timestamp
+                        dateStr = data.createdAt.toDate().toLocaleDateString('vi-VN');
+                    }
+
+                    orders.push({
+                        docId: docSnap.id,
+                        id: idDisplay,
+                        customer: data.customerInfo ? data.customerInfo.name : 'Khách vãng lai',
+                        product: productDesc,
+                        total: data.billing ? data.billing.total : 0,
+                        date: dateStr,
+                        status: data.status || 'pending'
+                    });
+                });
+
+                renderTable(orders);
+            } catch (error) {
+                console.error("Lỗi lấy đơn hàng:", error);
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger" style="padding: 2rem;">Lỗi kết nối CSDL hiện tại. Vui lòng thử lại.</td></tr>';
+            }
         }
+
+        loadOrders();
 
         // Search logic
         document.getElementById('search-order').addEventListener('input', (e) => {
@@ -224,5 +275,6 @@
         });
 
     </script>
+    <script type="module" src="js/authGuard.js"></script>
 </body>
 </html>

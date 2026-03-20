@@ -169,7 +169,7 @@
         gradientRevenue.addColorStop(0, 'rgba(212, 175, 55, 0.4)'); // Gold fading out
         gradientRevenue.addColorStop(1, 'rgba(212, 175, 55, 0.0)');
 
-        const revenueChart = new Chart(ctxRevenue, {
+        window.revenueChart = new Chart(ctxRevenue, {
             type: 'line',
             data: {
                 labels: ['T10', 'T11', 'T12', 'T01', 'T02', 'T03'],
@@ -230,7 +230,7 @@
         // --- 2. Doughnut Chart (Product Lines) ---
         const ctxProductLine = document.getElementById('productLineChart').getContext('2d');
         
-        const productLineChart = new Chart(ctxProductLine, {
+        window.productLineChart = new Chart(ctxProductLine, {
             type: 'doughnut',
             data: {
                 labels: ['Dành cho Nữ', 'Dành cho Nam', 'Unisex'],
@@ -297,5 +297,7 @@
         }, 1200);
 
     </script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/authGuard.js"></script>
 </body>
 </html>
