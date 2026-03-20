@@ -78,12 +78,23 @@
 
             try {
                 // Đăng nhập bằng Email & Password qua Firebase
-                await signInWithEmailAndPassword(auth, email, pass);
+                const userCredential = await signInWithEmailAndPassword(auth, email, pass);
                 
-                // Thành công chuyển hướng
-                window.location.href = 'dashboard.html';
+                // Kiểm tra Email có phải Admin không
+                if (userCredential.user.email === 'qvinh121205@gmail.com') {
+                    // Thành công chuyển hướng
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Đăng xuất ngay lập tức và báo lỗi
+                    auth.signOut();
+                    document.querySelector('.toast-message').innerText = 'Tài khoản không có quyền Admin!';
+                    showToast();
+                    btnSubmit.innerHTML = originalBtnText;
+                    btnSubmit.disabled = false;
+                }
             } catch (error) {
                 console.error("Lỗi đăng nhập Admin:", error);
+                document.querySelector('.toast-message').innerText = 'Sai thông tin đăng nhập';
                 showToast();
                 btnSubmit.innerHTML = originalBtnText;
                 btnSubmit.disabled = false;

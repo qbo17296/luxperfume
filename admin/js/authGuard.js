@@ -11,8 +11,13 @@ onAuthStateChanged(auth, (user) => {
         console.warn("Truy cập Admin bị từ chối. Vui lòng đăng nhập.");
         window.location.href = '../pages/login.html';
     } else {
-        // Nếu đã đăng nhập, cho phép truy cập.
-        // Tương lai có thể verify thêm Custom Claims (Role Admin) ở đây.
-        console.log("Xác thực thành công. Tài khoản: " + user.email);
+        // Kiểm tra quyền Admin
+        const adminEmails = ['qvinh121205@gmail.com'];
+        if (adminEmails.includes(user.email)) {
+             console.log("Xác thực Quyền Admin thành công. Xin chào sếp: " + user.email);
+        } else {
+             alert('Khu vực này chỉ dành cho Chủ Cửa Hàng. Bạn không có quyền truy cập!');
+             window.location.href = '../index.html';
+        }
     }
 });
