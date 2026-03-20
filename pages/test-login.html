@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập | Lux Perfume</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../assets/css/reset.css">
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        .split-layout {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+        
+        /* Left Side: Cinematic Image - Rose droplets */
+        .split-left {
+            flex: 1.2;
+            background-color: var(--jet-black, #111111);
+            background-image: url('../assets/images/login-bg.png'); /* Chờ AI Image Tool */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: none;
+        }
+        @media (min-width: 900px) {
+            .split-left { display: block; }
+        }
+        .split-left::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+        }
+        
+        .brand-overlay {
+            position: absolute;
+            bottom: 4rem;
+            left: 4rem;
+            z-index: 2;
+            color: var(--white);
+            max-width: 400px;
+        }
+        .brand-overlay .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .brand-overlay p {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Right Side: Form */
+        .split-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            background: var(--white);
+            position: relative;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-header {
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+        .login-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--jet-black, #111111);
+            margin-bottom: 0.5rem;
+        }
+        .login-header p {
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Minimalist Form Inputs */
+        .min-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .min-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .min-input {
+            width: 100%;
+            padding: 0.875rem 0;
+            border: none;
+            border-bottom: 1px solid #e5e7eb;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color var(--transition-fast);
+            color: var(--jet-black, #111111);
+        }
+        .min-input:focus {
+            outline: none;
+            border-bottom-color: var(--gold-primary);
+        }
+        .min-input::placeholder {
+            color: #d1d5db;
+        }
+        
+        /* Forgot Password link */
+        .forgot-pass {
+            display: block;
+            text-align: right;
+            margin-top: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .forgot-pass:hover {
+            color: var(--gold-primary);
+        }
+
+        /* Submit Button custom - Black background, Gold text */
+        .btn-black-submit {
+            width: 100%;
+            padding: 1.125rem;
+            background-color: var(--jet-black, #111111);
+            color: var(--gold-primary, #d4af37);
+            border: 1px solid var(--jet-black, #111111);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-black-submit:hover {
+            background-color: transparent;
+            color: var(--jet-black, #111111);
+            box-shadow: 0 10px 25px -5px rgba(17, 17, 17, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .btn-google-auth {
+            width: 100%;
+            padding: 1.125rem;
+            background-color: #fff;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background-color 0.2s;
+            margin-bottom: 1.5rem;
+        }
+        .btn-google-auth:hover { background-color: #f8f9fa; }
+        
+        /* Sign up link */
+        .signup-link {
+            text-align: center;
+            margin-top: 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        .signup-link a {
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .signup-link a:hover { color: var(--jet-black, #111111); }
+        
+        /* Back to Home Config */
+        .home-float {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+        .home-float:hover {
+            color: var(--gold-primary);
+        }
+
+        /* Validation Error Feedback styles */
+        .error-msg {
+            display: block;
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.4rem;
+            font-family: 'Inter', sans-serif;
+            opacity: 0;
+            transition: opacity 0.3s;
+            height: 0;
+            overflow: hidden;
+        }
+        .error-msg.show {
+            opacity: 1;
+            height: auto;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="split-layout">
+        
+        <!-- Nửa Trái: Ảnh Nghệ Thuật -->
+        <div class="split-left">
+            <div class="brand-overlay">
+                <span class="logo"><span class="text-gold">Lux</span> Perfume</span>
+                <p>Khởi nguồn của nghệ thuật mùi hương xa xỉ.</p>
+            </div>
+        </div>
+        
+        <!-- Nửa Phải: Form Đăng Nhập -->
+        <div class="split-right">
+            
+            <a href="../index.html" class="home-float">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Quay lại
+            </a>
+            
+            <div class="login-container">
+                <div class="login-header">
+                    <h1>Đăng nhập.</h1>
+                    <p>Chào mừng bạn trở lại với Lux Perfume.</p>
+                </div>
+                
+                <form action="#" id="loginForm">
+                    
+                    <div class="min-group">
+                        <label>Email hoặc Tên đăng nhập</label>
+                        <input type="text" id="email" class="min-input" placeholder="Nhập Email hoặc Username">
+                        <span class="error-msg"></span>
+                    </div>
+                    
+                    <div class="min-group" style="margin-bottom: 0.5rem;">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="password" class="min-input" placeholder="Nhập mật khẩu của bạn">
+                        <span class="error-msg"></span>
+                    </div>
+                    
+                    <a href="#" class="forgot-pass">Quên mật khẩu?</a>
+
+                    <button type="submit" class="btn-black-submit">Đăng nhập</button>
+                    
+                    <div style="text-align: center; margin: 1.5rem 0; color: var(--text-secondary); font-size: 0.875rem;">
+                        <span style="background: #fff; padding: 0 10px; z-index: 1; position: relative;">HOẶC</span>
+                        <div style="height: 1px; background: #e5e7eb; position: relative; top: -10px; z-index: 0;"></div>
+                    </div>
+                    
+                    <button type="button" class="btn-google-auth" id="btn-google-login">
+                         <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+                        Đăng nhập bằng Google
+                    </button>
+                    
+                    <div class="signup-link">
+                        Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </main>
+    
+    <script type="module" src="../assets/js/firebase-config.js"></script>
+    <script type="module" src="../assets/js/login.js"></script>
+    <style>
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</body>
+</html>
