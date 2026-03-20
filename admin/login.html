@@ -54,30 +54,44 @@
     </div>
 
     <!-- JavaScript Xử Lý Đăng Nhập -->
-    <script>
+    <script type="module">
+        import { app } from '../assets/js/firebase-config.js';
+        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
+
+        const auth = getAuth(app);
         const loginForm = document.getElementById('login-form');
         const toast = document.getElementById('toast');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const btnSubmit = loginForm.querySelector('button[type="submit"]');
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Chặn tải lại trang
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
             
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
+            const email = usernameInput.value.trim();
+            const pass = passwordInput.value;
 
-            // Logic mô phỏng cứng: admin / admin
-            if (user === 'admin' && pass === 'admin') {
-                // Đăng nhập đúng: Chuyển hướng
+            // Cập nhật UI loading
+            const originalBtnText = btnSubmit.innerText;
+            btnSubmit.innerHTML = 'Đang xác thực...';
+            btnSubmit.disabled = true;
+
+            try {
+                // Đăng nhập bằng Email & Password qua Firebase
+                await signInWithEmailAndPassword(auth, email, pass);
+                
+                // Thành công chuyển hướng
                 window.location.href = 'dashboard.html';
-            } else {
-                // Đăng nhập sai: Hiển thị Toast
+            } catch (error) {
+                console.error("Lỗi đăng nhập Admin:", error);
                 showToast();
+                btnSubmit.innerHTML = originalBtnText;
+                btnSubmit.disabled = false;
             }
         });
 
         function showToast() {
             toast.classList.add('show');
-            
-            // Tự động ẩn Toast sau 3 giây
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
