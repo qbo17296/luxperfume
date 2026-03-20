@@ -1032,13 +1032,6 @@ Cảm ơn đã tham gia</textarea>
 
         // Initialization
         document.addEventListener('DOMContentLoaded', () => {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if(!isLoggedIn) {
-                // If not logged in, mock Guest data
-                document.getElementById('welcomeNameDisplay').innerText = 'Tài Khoản Khách';
-                document.getElementById('cardOwnerName').innerText = 'GUEST ACCOUNT';
-            }
-            
             // Bootstrap the simulator with default value
             const initialTier = document.getElementById('tierSimulator').value;
             setMemberTier(initialTier);

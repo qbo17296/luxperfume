@@ -1,4 +1,7 @@
 // assets/js/checkout.js
+import { db } from './firebase-config.js';
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const summaryItemsList = document.getElementById('summaryItemsList');
@@ -176,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- XỬ LÝ SỰ KIỆN NÚT "XÁC NHẬN ĐẶT HÀNG" ---
     const form = document.getElementById('checkoutForm');
     if(form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // --- VALIDATION LÕI ---
@@ -243,11 +246,50 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite; margin: 0 auto; display: block;"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>`;
             btn.style.pointerEvents = 'none'; 
             
-            // Giả lập xử lý 2 giây
-            setTimeout(() => {
+            // Build the Order Object
+            const cartStr = localStorage.getItem('lux_cart');
+            const cart = cartStr ? JSON.parse(cartStr) : [];
+            let finalTotal = currentSubtotal + currentShipping - currentDiscountAmt;
+            if (finalTotal < 0) finalTotal = 0;
+
+            const auth = getAuth();
+            const user = auth.currentUser;
+
+            const orderData = {
+                uid: user ? user.uid : 'guest',
+                customerInfo: {
+                    name: nameEl.value.trim(),
+                    phone: phoneEl.value.trim(),
+                    address: addressEl.value.trim(),
+                    city: cityEl.value.trim()
+                },
+                items: cart,
+                billing: {
+                    subtotal: currentSubtotal,
+                    shipping: currentShipping,
+                    discount: currentDiscountAmt,
+                    discountCode: appliedCode,
+                    total: finalTotal
+                },
+                status: 'pending',
+                createdAt: serverTimestamp()
+            };
+            
+            try {
+                // Save Order to Firestore
+                await addDoc(collection(db, "orders"), orderData);
+                
+                // Clear Cart
                 localStorage.removeItem('lux_cart');
-                window.location.href = 'success.html'; // Tự động chuyển trang Success
-            }, 2000);
+                
+                // Redirect to Success Page
+                window.location.href = 'success.html';
+            } catch (err) {
+                console.error("Lỗi đặt hàng: ", err);
+                btn.innerHTML = 'Xác Nhận Đặt Hàng';
+                btn.style.pointerEvents = 'auto';
+                alert("Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại sau.");
+            }
         });
     }
 });

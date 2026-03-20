@@ -205,18 +205,6 @@
 
     <script src="./assets/js/main.js"></script>
     <script src="./assets/js/cart.js"></script>
-    <script>
-        // Check Login state via LocalStorage
-        document.addEventListener('DOMContentLoaded', () => {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const loginBtn = document.getElementById('loginBtn');
-            const userProfile = document.getElementById('userProfile');
-
-            if (isLoggedIn === 'true') {
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (userProfile) userProfile.style.display = 'flex';
-            }
-        });
-    </script>
+    <script type="module" src="./assets/js/auth.js"></script>
 </body>
 </html>
