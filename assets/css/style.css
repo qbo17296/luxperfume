@@ -418,15 +418,23 @@ p {
 
 .footer h4 {
   font-size: var(--text-sm);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: var(--spacing-md);
   color: var(--text-primary);
 }
 
-.footer-desc, .footer p, .footer a {
+.footer-desc, .footer p {
   font-size: var(--text-sm);
-  color: var(--text-secondary);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.footer a {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .footer ul li {
