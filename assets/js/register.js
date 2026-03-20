@@ -168,13 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch((error) => {
                     btn.innerHTML = originalText;
                     const errorCode = error.code;
-                    let errorMsg = 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                    let errorMsg = 'Lỗi: ' + (error.message || errorCode);
                     if (errorCode === 'auth/email-already-in-use') {
                         errorMsg = 'Email này đã được sử dụng.';
                         showError(email, errorMsg);
+                    } else if (errorCode === 'auth/operation-not-allowed') {
+                        errorMsg = 'Hệ thống chưa mở tính năng đăng ký (Operation Not Allowed). Vui lòng báo Admin.';
+                        showError(password, errorMsg);
                     } else {
                         showError(password, errorMsg);
                     }
+                    console.error("Registration Error details:", error);
                 });
         }
     });
