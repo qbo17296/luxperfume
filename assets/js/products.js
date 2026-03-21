@@ -13,7 +13,7 @@ const products = [
     {
         id: "p2",
         name: "Oud Éternel",
-        brand: "Lux Exclusif",
+        brand: "Tom Ford",
         price: 6200000,
         category: "nam",
         scent: "woody",
@@ -23,7 +23,7 @@ const products = [
     {
         id: "p3",
         name: "Midnight Citrus",
-        brand: "Lux Exclusif",
+        brand: "Dior",
         price: 3800000,
         category: "nam",
         scent: "citrus",
@@ -33,7 +33,7 @@ const products = [
     {
         id: "p4",
         name: "Velvet Iris",
-        brand: "Lux Exclusif",
+        brand: "Chanel",
         price: 5900000,
         category: "nữ",
         scent: "floral",
@@ -53,7 +53,7 @@ const products = [
     {
         id: "p6",
         name: "Aqua Celestia",
-        brand: "Lux Exclusif",
+        brand: "Tom Ford",
         price: 3500000,
         category: "unisex",
         scent: "citrus",
@@ -63,7 +63,7 @@ const products = [
     {
         id: "p7",
         name: "Leather & Wood",
-        brand: "Lux Exclusif",
+        brand: "Dior",
         price: 5500000,
         category: "nam",
         scent: "woody",
@@ -73,7 +73,7 @@ const products = [
     {
         id: "p8",
         name: "Vanilla Dream",
-        brand: "Lux Exclusif",
+        brand: "Chanel",
         price: 4800000,
         category: "nữ",
         scent: "oriental",

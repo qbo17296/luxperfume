@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initFilters(items) {
         const tags = document.querySelectorAll('.filter-scent .filter-tag');
+        const brandChecks = document.querySelectorAll('.filter-brand input');
         const genderChecks = document.querySelectorAll('.filter-gender input');
         const priceChecks = document.querySelectorAll('.filter-price input');
         const sortSelect = document.getElementById('sort-select');
@@ -116,7 +117,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // 2. Gender Filter
+            // 2. Brand Filter
+            const selectedBrands = Array.from(brandChecks).filter(c => c.checked).map(c => c.value);
+            if (selectedBrands.length > 0) {
+                filtered = filtered.filter(p => selectedBrands.includes(p.brand));
+            }
+
+            // 3. Gender Filter
             const selectedGenders = Array.from(genderChecks).filter(c => c.checked).map(c => c.value);
             if (selectedGenders.length > 0) {
                 filtered = filtered.filter(p => selectedGenders.includes(p.category));
@@ -161,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        if (brandChecks) brandChecks.forEach(chk => chk.addEventListener('change', applyFilters));
         if (genderChecks) genderChecks.forEach(chk => chk.addEventListener('change', applyFilters));
         if (priceChecks) priceChecks.forEach(chk => chk.addEventListener('change', applyFilters));
         if (sortSelect) sortSelect.addEventListener('change', applyFilters);
