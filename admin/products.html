@@ -206,15 +206,19 @@
                         <div id="dynamic-variants-list" style="display: flex; flex-direction: column; gap: 1rem;">
                             <!-- Mặc định có 1 dòng -->
                             <div class="dynamic-variant-row" style="display: flex; gap: 1rem; align-items: center; background: var(--surface-color); padding: 1rem; border: 1px dashed var(--border-light); border-radius: 4px;">
-                                <div style="flex: 1;">
+                                <div style="flex: 1.5;">
                                     <label class="text-sm text-secondary">Tên Phân loại</label>
                                     <input type="text" name="variant_names[]" class="form-input" value="10ml (Chiết)" required>
                                 </div>
                                 <div style="flex: 1;">
-                                    <label class="text-sm text-secondary">Giá (VNĐ)</label>
+                                    <label class="text-sm text-secondary">Giá Gốc (VNĐ)</label>
+                                    <input type="number" name="variant_original_prices[]" class="form-input" placeholder="VD: 600000">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label class="text-sm text-secondary">Giá Mới (VNĐ)</label>
                                     <input type="number" name="variant_prices[]" class="form-input" placeholder="VD: 450000" required>
                                 </div>
-                                <div style="width: 100px;">
+                                <div style="width: 80px;">
                                     <label class="text-sm text-secondary">Tồn kho</label>
                                     <input type="number" name="variant_stocks[]" class="form-input" placeholder="0" required>
                                 </div>
@@ -498,15 +502,19 @@
             div.className = 'dynamic-variant-row';
             div.style.cssText = 'display: flex; gap: 1rem; align-items: center; background: var(--surface-color); padding: 1rem; border: 1px dashed var(--border-light); border-radius: 4px;';
             div.innerHTML = `
-                <div style="flex: 1;">
+                <div style="flex: 1.5;">
                     <label class="text-sm text-secondary">Tên Phân loại</label>
                     <input type="text" name="variant_names[]" class="form-input" value="${variantName}" required>
                 </div>
                 <div style="flex: 1;">
-                    <label class="text-sm text-secondary">Giá (VNĐ)</label>
-                    <input type="number" name="variant_prices[]" class="form-input" placeholder="VD: 1500000" required>
+                    <label class="text-sm text-secondary">Giá Gốc (VNĐ)</label>
+                    <input type="number" name="variant_original_prices[]" class="form-input" placeholder="VD: 600000">
                 </div>
-                <div style="width: 100px;">
+                <div style="flex: 1;">
+                    <label class="text-sm text-secondary">Giá Mới (VNĐ)</label>
+                    <input type="number" name="variant_prices[]" class="form-input" placeholder="VD: 450000" required>
+                </div>
+                <div style="width: 80px;">
                     <label class="text-sm text-secondary">Tồn kho</label>
                     <input type="number" name="variant_stocks[]" class="form-input" placeholder="0" required>
                 </div>
