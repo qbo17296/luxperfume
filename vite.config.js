@@ -21,6 +21,7 @@ function htmlIncludePlugin() {
 }
 
 export default defineConfig({
+    base: '/luxperfume/',
     plugins: [htmlIncludePlugin()],
     build: {
         outDir: 'dist',
