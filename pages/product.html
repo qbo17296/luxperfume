@@ -520,6 +520,60 @@
             btnElement.classList.add('active');
         }
 
+        // Tự động load dữ liệu sản phẩm tương ứng nếu có truyền ID qua URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (!productId) return; 
+
+            let savedProducts = localStorage.getItem('luxperfume_products');
+            if (savedProducts) {
+                const products = JSON.parse(savedProducts);
+                const p = products.find(item => item.id === productId);
+                if (p) {
+                    // Update Product Name
+                    const nameElem = document.getElementById('product-name');
+                    if(nameElem) nameElem.textContent = p.name;
+                    const stickyName = document.getElementById('sticky-name');
+                    if(stickyName) stickyName.textContent = p.name;
+                    document.title = p.name + ' - Lux Perfume';
+                    
+                    // Update Prices
+                    const currentPriceElem = document.getElementById('product-price');
+                    if(currentPriceElem) {
+                        currentPriceElem.innerHTML = new Intl.NumberFormat('vi-VN').format(p.price) + '<span style="text-decoration: underline;">đ</span>';
+                        currentPriceElem.setAttribute('data-price', p.price);
+                    }
+                    const stickyPrice = document.getElementById('sticky-price');
+                    if(stickyPrice) stickyPrice.textContent = new Intl.NumberFormat('vi-VN').format(p.price) + '₫';
+                    
+                    const oldPriceElem = document.querySelector('.old-price');
+                    if(oldPriceElem) {
+                        const oldPrice = p.price * 1.2; // Giả định tính giảm 20%
+                        oldPriceElem.innerHTML = new Intl.NumberFormat('vi-VN').format(oldPrice) + '<span style="text-decoration: underline;">đ</span>';
+                    }
+
+                    // Update Images
+                    if (p.image) {
+                        const mainImg = document.getElementById('main-image');
+                        if (mainImg) mainImg.src = p.image;
+                        const stickyImg = document.getElementById('sticky-img');
+                        if (stickyImg) stickyImg.src = p.image;
+                        const thumbs = document.querySelectorAll('.thumb');
+                        if(thumbs.length > 0) thumbs[0].src = p.image;
+                    }
+                    
+                    // Update Desc & Brand
+                    const descContainer = document.querySelector('.product-description');
+                    if (descContainer) descContainer.innerHTML = `<p>${p.shortDesc || 'Sản phẩm cao cấp từ ' + p.brand}</p>`;
+                    
+                    const breadcrumb = document.querySelector('.breadcrumb');
+                    if(breadcrumb) {
+                        breadcrumb.innerHTML = `<a href="../index.html">Trang chủ</a> / <a href="shop.html">Niche Perfumes</a> / ${p.name}`;
+                    }
+                }
+            }
+        });
 
     </script>
 </body>
