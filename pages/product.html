@@ -166,6 +166,38 @@
 
         .add-btn {
             flex-grow: 1;
+            white-space: nowrap;
+        }
+
+        /* Size Variants */
+        .size-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .size-option input[type="radio"] {
+            display: none;
+        }
+        .size-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            font-size: var(--text-sm);
+            transition: all var(--transition-fast);
+            background: var(--surface-color);
+        }
+        .size-option:hover .size-btn {
+            border-color: var(--gold-primary);
+        }
+        .size-option input[type="radio"]:checked + .size-btn {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            background: rgba(212, 175, 55, 0.05);
+            font-weight: 500;
         }
 
         /* Specs */
@@ -284,14 +316,37 @@
                     </div>
                 </div>
 
+                <div class="variant-selector" style="margin-bottom: 1.5rem;">
+                    <p class="text-secondary text-sm" style="margin-bottom: 0.5rem; font-weight: 500; text-transform: uppercase;">Dung tích</p>
+                    <div class="size-options">
+                        <label class="size-option" style="cursor: pointer;">
+                            <input type="radio" name="size" value="10ml">
+                            <span class="size-btn">10ml (Chiết)</span>
+                        </label>
+                        <label class="size-option" style="cursor: pointer;">
+                            <input type="radio" name="size" value="50ml" checked>
+                            <span class="size-btn">50ml</span>
+                        </label>
+                        <label class="size-option" style="cursor: pointer;">
+                            <input type="radio" name="size" value="100ml">
+                            <span class="size-btn">100ml</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="add-to-cart-form">
-                    <div class="quantity-selector">
+                    <div class="quantity-selector" style="margin-right: 0.5rem;">
                         <button type="button" class="qty-btn" id="qty-minus">−</button>
                         <input type="number" class="qty-input" id="qty-input" value="1" min="1" max="10" readonly>
                         <button type="button" class="qty-btn" id="qty-plus">+</button>
                     </div>
-                    <button type="button" class="btn-primary add-btn" id="add-to-cart-btn">Thêm Vào Giỏ</button>
+                    <button type="button" class="btn-primary add-btn" id="add-to-cart-btn" style="background: transparent; color: var(--text-primary); border: 1px solid var(--text-primary);">Thêm Vào Giỏ</button>
+                    <button type="button" class="btn-primary add-btn" id="buy-now-btn" style="background: var(--text-primary); color: var(--surface-color);">Mua Ngay</button>
                 </div>
+                <p class="text-sm text-secondary" style="margin-top: -0.5rem; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="display:inline-block; width:8px; height:8px; background-color: #28a745; border-radius: 50%;"></span>
+                    1071 sản phẩm có sẵn
+                </p>
 
                 <div class="product-tabs">
                     <div class="tabs-header">
