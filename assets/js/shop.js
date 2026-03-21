@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += `
                 <div class="product-card fade-up ${delayClass}">
                     <div class="product-img-wrapper img-reveal">
-                        <a href="/pages/product.html?id=${p.id}">
+                        <a href="product.html?id=${p.id}">
                             <img src="${p.image}" alt="${p.name}" class="product-img">
                         </a>
                         <div class="product-action-overlay">
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="product-info">
                         <div class="product-tags"><span class="tag">${p.category}</span><span class="tag">${p.scent}</span></div>
-                        <h3 class="product-name"><a href="/pages/product.html?id=${p.id}">${p.name}</a></h3>
+                        <h3 class="product-name"><a href="product.html?id=${p.id}">${p.name}</a></h3>
                         <p class="product-notes">${p.shortDesc}</p>
                         <p class="product-price">${priceStr}</p>
                     </div>
