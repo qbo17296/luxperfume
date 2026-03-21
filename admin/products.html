@@ -582,7 +582,46 @@
             const formData = new FormData(e.target);
             const dataObj = Object.fromEntries(formData.entries());
             
-            // Log dữ liệu form để mô phỏng tích hợp backend
+            // Tạo ID giả mới
+            const newId = 'SP00' + (products.length + 1);
+            
+            // Lấy giá trị biến thể đầu tiên để làm đại diện hiển thị ra bảng chính
+            const prices = formData.getAll('variant_prices[]');
+            const stocks = formData.getAll('variant_stocks[]');
+            const price = prices.length ? parseInt(prices[0]) : 0;
+            // Tính tổng tồn kho của tất cả phân loại
+            const stock = stocks.length ? stocks.reduce((a, b) => a + parseInt(b || 0), 0) : 0;
+
+            // Xử lý ảnh đại diện (Lấy base64 từ thumbnail đầu tiên)
+            let imageSrc = '../assets/images/p1.png'; // mặc định
+            if (uploadedFiles.length > 0) {
+                const firstThumb = document.querySelector('.image-thumbnail-wrapper img');
+                if (firstThumb) {
+                    imageSrc = firstThumb.src;
+                }
+            }
+            
+            const newProduct = {
+                id: newId,
+                name: dataObj.name,
+                category: dataObj.category || 'Unisex',
+                price: price,
+                stock: stock,
+                image: imageSrc
+            };
+            
+            // Cập nhật mốc UI
+            products.unshift(newProduct);
+            renderProducts(products);
+            
+            alert('Đăng sản phẩm "' + dataObj.name + '" thành công! Mã SP mới: ' + newId);
+            closeModal();
+            
+            // Xóa rỗng form và preview ảnh
+            e.target.reset();
+            uploadedFiles = [];
+            renderPreviews();
+        });
             console.log("Dữ liệu formData thu thập được:", dataObj);
             
             alert('Sản phẩm "' + dataObj.name + '" đã sẵn sàng để lưu vào hệ thống!');
