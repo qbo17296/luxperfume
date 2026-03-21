@@ -179,17 +179,43 @@
             </div>
             <div class="modal-body">
                 <form id="product-form">
+                    <!-- Hàng 1: Tên & Giá -->
                     <div class="form-row">
                         <div class="form-group w-50">
                             <label>Tên Sản phẩm</label>
-                            <input type="text" class="form-input" placeholder="Ví dụ: Noir Exquis..." required>
+                            <input type="text" name="name" class="form-input" placeholder="Ví dụ: Noir Exquis..." required>
                         </div>
                         <div class="form-group w-50">
                             <label>Giá Bán (VNĐ)</label>
-                            <input type="number" class="form-input" placeholder="Ví dụ: 4500000" required>
+                            <input type="number" name="price" class="form-input" placeholder="Ví dụ: 4500000" min="0" required>
                         </div>
                     </div>
                     
+                    <!-- Hàng 2: Thương hiệu & Tồn kho -->
+                    <div class="form-row">
+                        <div class="form-group w-50">
+                            <label>Thương hiệu</label>
+                            <select name="brand" class="form-input" required>
+                                <option value="">Chọn Thương hiệu...</option>
+                                <option value="Lux Exclusif">Lux Exclusif</option>
+                                <option value="Dior">Dior</option>
+                                <option value="Chanel">Chanel</option>
+                                <option value="Tom Ford">Tom Ford</option>
+                            </select>
+                        </div>
+                        <div class="form-group w-50">
+                            <label>Số lượng Tồn kho (Chai)</label>
+                            <input type="number" name="stock" class="form-input" placeholder="0" min="0" required>
+                        </div>
+                    </div>
+
+                    <!-- Hàng 3: Mô tả Sản phẩm -->
+                    <div class="form-group">
+                        <label>Mô tả Sản phẩm</label>
+                        <textarea name="description" class="form-input" rows="4" placeholder="Khơi nguồn từ những cánh hồng Đan Mạch kiêu kỳ rực rỡ dưới ánh phân mai..." required></textarea>
+                    </div>
+                    
+                    <!-- Hàng 4: Upload -->
                     <div class="form-group">
                         <label>Tải lên Hình ảnh</label>
                         <div class="upload-area">
@@ -198,32 +224,59 @@
                         </div>
                     </div>
 
+                    <!-- Hàng 5: Phân loại cơ bản -->
+                    <div class="section-divider">
+                        <span>Phân loại & Thuộc tính</span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group w-50">
+                            <label>Giới tính</label>
+                            <select name="gender" class="form-input" required>
+                                <option value="">Chọn Giới tính...</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Unisex">Unisex</option>
+                            </select>
+                        </div>
+                        <div class="form-group w-50">
+                            <label>Nhóm hương gốc</label>
+                            <select name="scentFamily" class="form-input" required>
+                                <option value="">Chọn Nhóm hương...</option>
+                                <option value="floral">Hương Hoa</option>
+                                <option value="woody">Hương Gỗ</option>
+                                <option value="citrus">Cam Chanh</option>
+                                <option value="oriental">Phương Đông</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Hàng 6: Profile Mùi hương -->
                     <div class="section-divider">
                         <span>Hồ sơ Mùi hương (Fragrance Profile)</span>
                     </div>
-
                     <div class="form-row">
                         <div class="form-group w-33">
                             <label>Hương đầu (Top Notes)</label>
-                            <input type="text" class="form-input" placeholder="Cam Bergamot..." required>
+                            <input type="text" name="topNotes" class="form-input" placeholder="Cam Bergamot...">
                         </div>
                         <div class="form-group w-33">
                             <label>Hương giữa (Heart Notes)</label>
-                            <input type="text" class="form-input" placeholder="Hoa Nhài, Hồng..." required>
+                            <input type="text" name="heartNotes" class="form-input" placeholder="Hoa Nhài, Hồng...">
                         </div>
                         <div class="form-group w-33">
                             <label>Hương cuối (Base Notes)</label>
-                            <input type="text" class="form-input" placeholder="Gỗ Đàn Hương..." required>
+                            <input type="text" name="baseNotes" class="form-input" placeholder="Gỗ Đàn Hương...">
                         </div>
                     </div>
 
+                    <!-- Toggles -->
                     <div class="form-group flex-between mt-4">
                         <div>
                             <label style="margin-bottom: 0;">Sản phẩm Bán chạy (Best Seller)</label>
                             <p class="text-secondary text-sm" style="font-weight: normal; margin-top: 0.25rem;">Gắn nhãn vàng, hiển thị ưu tiên trên Cửa hàng</p>
                         </div>
                         <label class="toggle-switch">
-                            <input type="checkbox">
+                            <input type="checkbox" name="isBestSeller">
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -234,7 +287,7 @@
                             <p class="text-secondary text-sm" style="font-weight: normal; margin-top: 0.25rem;">Gắn nhãn đen độc bản cho bộ sưu tập đặc biệt</p>
                         </div>
                         <label class="toggle-switch">
-                            <input type="checkbox">
+                            <input type="checkbox" name="isLimited">
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -420,9 +473,15 @@
         // Xử lý Form Submit (Giả lập)
         document.getElementById('product-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Sản phẩm đã được Thêm thành công vào hệ thống!');
+            const formData = new FormData(e.target);
+            const dataObj = Object.fromEntries(formData.entries());
+            
+            // Log dữ liệu form để mô phỏng tích hợp backend
+            console.log("Dữ liệu formData thu thập được:", dataObj);
+            
+            alert('Sản phẩm "' + dataObj.name + '" đã sẵn sàng để lưu vào hệ thống!');
             closeModal();
-            // Optional: Thêm logic append dữ liệu thật vào mảng `products` và gọi renderProducts.
+            e.target.reset();
         });
 
     </script>
