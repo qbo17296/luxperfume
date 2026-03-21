@@ -9,36 +9,49 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="../assets/css/style.css">
+  <script type="module" crossorigin src="/assets/about-CwLXy2dR.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/firebase-config-COWQ979w.js">
+  <link rel="modulepreload" crossorigin href="/assets/auth-FLDyGzMu.js">
+  <link rel="modulepreload" crossorigin href="/assets/main-BhDaMGPS.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Oh1D6yWO.css">
 </head>
 <body>
 
     <!-- Header / Navigation -->
-    <header class="navbar glass-nav scrolled" id="navbar">
+    <header class="navbar glass-nav" id="navbar">
         <div class="container nav-container">
-            <a href="../index.html" class="logo">
+            <a href="/" class="logo">
                 <span class="text-gold">Lux</span> Perfume
             </a>
             <nav class="nav-links">
-                <a href="../index.html">Trang chủ</a>
-                <a href="shop.html">Cửa hàng</a>
-                <a href="../index.html#featured">Bộ sưu tập</a>
-                <a href="../index.html#footer">Liên hệ</a>
+                <a href="/" class="active">Trang chủ</a>
+                <a href="/pages/shop.html">Cửa hàng</a>
+                <a href="#featured">Bộ sưu tập</a>
+                <a href="#footer">Liên hệ</a>
             </nav>
             <div class="nav-actions">
-                <a href="cart.html" class="icon-btn cart-btn">
+                <button class="icon-btn" aria-label="Tìm kiếm">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                </button>
+                <a href="/pages/cart.html" class="icon-btn cart-btn" aria-label="Giỏ hàng">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                     <span class="cart-count">0</span>
                 </a>
                 
+                <!-- Khu vực Auth Thay Thế -->
                 <div id="auth-section" style="display: flex; align-items: center;">
-                    <a href="login.html" class="btn-login-outline" id="loginBtn">Đăng nhập</a>
-                    <div id="userProfile" style="display: none; align-items: center; gap: 0.5rem; color: var(--gold-primary); font-size: 0.875rem; font-weight: 500;">
+                    <a href="/pages/login.html" class="btn-login-outline" id="loginBtn">Đăng nhập</a>
+                    <div id="userProfile" onclick="window.location.href='pages/profile.html'" style="display: none; align-items: center; gap: 0.5rem; color: var(--gold-primary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <span class="hide-on-mobile">Xin chào, Khách VIP</span>
                     </div>
                 </div>
+
             </div>
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn icon-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
         </div>
     </header>
     
@@ -71,23 +84,23 @@
     <footer id="footer" class="footer">
         <div class="container footer-grid">
             <div class="footer-brand">
-                <a href="../index.html" class="logo text-gold" style="font-size: var(--text-2xl);">Lux</a>
+                <a href="/" class="logo text-gold" style="font-size: var(--text-2xl);">Lux</a>
                 <p class="footer-desc">Đánh thức cảm xúc qua từng nốt hương sang trọng nhất.</p>
             </div>
             <div class="footer-links">
                 <h4>Khám phá</h4>
                 <ul>
-                    <li><a href="../index.html">Trang chủ</a></li>
-                    <li><a href="shop.html">Cửa hàng</a></li>
-                    <li><a href="about.html">Về chúng tôi</a></li>
+                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="/pages/shop.html">Cửa hàng</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
                 </ul>
             </div>
             <div class="footer-links">
                 <h4>CHÍNH SÁCH MUA HÀNG</h4>
                 <ul>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="shipping.html">Giao hàng & Đổi trả</a></li>
-                    <li><a href="privacy.html">Chính sách bảo mật</a></li>
+                    <li><a href="/pages/faq.html">FAQ</a></li>
+                    <li><a href="/pages/shipping.html">Giao hàng & Đổi trả</a></li>
+                    <li><a href="/pages/privacy.html">Chính sách bảo mật</a></li>
                 </ul>
             </div>
             <div class="footer-contact">
@@ -95,6 +108,10 @@
                 <p>Email: contact@luxperfume.vn</p>
                 <p>Hotline: 0981012420</p>
                 <p>Địa chỉ: 132 KQH Yersin, Phường Lâm Viên, Đà Lạt</p>
+                <div class="footer-social" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <a href="#" aria-label="Facebook" class="text-gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                    <a href="#" aria-label="Instagram" class="text-gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom text-center">
@@ -102,7 +119,5 @@
         </div>
     </footer>
 
-    <script type="module" src="../assets/js/main.js"></script>
-    <script type="module" src="../assets/js/auth.js"></script>
 </body>
 </html>
