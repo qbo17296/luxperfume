@@ -1,3 +1,4 @@
+import './products.js';
 // shop.js - Logic for the shop page correctly rendering products from mock data
 
 document.addEventListener('DOMContentLoaded', () => {

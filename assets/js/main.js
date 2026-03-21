@@ -1,3 +1,5 @@
+import './cart.js';
+import './interactions.js';
 // main.js - Xử lý logic chung và micro-animations
 document.addEventListener('DOMContentLoaded', () => {
     
