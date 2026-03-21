@@ -87,7 +87,7 @@
         .notes-list {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: var(--spacing-sm);
+            gap: var(--spacing-md);
             margin-bottom: var(--spacing-lg);
             padding-bottom: var(--spacing-lg);
             border-bottom: 1px solid var(--border-light);
@@ -95,6 +95,17 @@
 
         .note-item {
             text-align: center;
+            padding: 1.5rem 1rem;
+            border: 1px solid var(--border-light);
+            background: var(--surface-light);
+            border-radius: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .note-item:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.08);
+            transform: translateY(-3px);
         }
 
         .note-title {
@@ -102,7 +113,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--text-secondary);
+            color: var(--gold-primary);
             margin-bottom: 0.5rem;
             display: block;
         }
