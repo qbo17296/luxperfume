@@ -99,20 +99,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initFilters(items) {
-        const tags = document.querySelectorAll('.filter-tag');
-        tags.forEach(tag => {
-            tag.addEventListener('click', (e) => {
-                tags.forEach(t => t.classList.remove('active'));
-                e.target.classList.add('active');
-                
-                const filter = e.target.getAttribute('data-filter');
-                let filtered = items;
-                if(filter !== 'all') {
-                    filtered = items.filter(p => p.scent === filter);
+        const tags = document.querySelectorAll('.filter-scent .filter-tag');
+        const genderChecks = document.querySelectorAll('.filter-gender input');
+        const priceChecks = document.querySelectorAll('.filter-price input');
+        const sortSelect = document.getElementById('sort-select');
+
+        function applyFilters() {
+            let filtered = [...items];
+
+            // 1. Scent Filter
+            const activeScent = document.querySelector('.filter-scent .active');
+            if (activeScent) {
+                const scentVal = activeScent.getAttribute('data-filter');
+                if (scentVal !== 'all') {
+                    filtered = filtered.filter(p => p.scent === scentVal);
                 }
-                renderProducts(filtered);
+            }
+
+            // 2. Gender Filter
+            const selectedGenders = Array.from(genderChecks).filter(c => c.checked).map(c => c.value);
+            if (selectedGenders.length > 0) {
+                filtered = filtered.filter(p => selectedGenders.includes(p.category));
+            }
+
+            // 3. Price Filter
+            const selectedPrices = Array.from(priceChecks).filter(c => c.checked).map(c => c.value);
+            if (selectedPrices.length > 0) {
+                filtered = filtered.filter(p => {
+                    return selectedPrices.some(range => {
+                        if (range === 'under4') return p.price < 4000000;
+                        if (range === '4to6') return p.price >= 4000000 && p.price <= 6000000;
+                        if (range === 'over6') return p.price > 6000000;
+                        return false;
+                    });
+                });
+            }
+
+            // 4. Sort
+            if (sortSelect) {
+                const sortVal = sortSelect.value;
+                if (sortVal === 'price-asc') {
+                    filtered.sort((a, b) => a.price - b.price);
+                } else if (sortVal === 'price-desc') {
+                    filtered.sort((a, b) => b.price - a.price);
+                } else if (sortVal === 'newest') {
+                    filtered.sort((a, b) => b.id.localeCompare(a.id));
+                }
+            }
+
+            renderProducts(filtered);
+        }
+
+        // Event Listeners
+        if (tags) {
+            tags.forEach(tag => {
+                tag.addEventListener('click', (e) => {
+                    tags.forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    applyFilters();
+                });
             });
-        });
+        }
+
+        if (genderChecks) genderChecks.forEach(chk => chk.addEventListener('change', applyFilters));
+        if (priceChecks) priceChecks.forEach(chk => chk.addEventListener('change', applyFilters));
+        if (sortSelect) sortSelect.addEventListener('change', applyFilters);
     }
 
     if(window.productsData) {

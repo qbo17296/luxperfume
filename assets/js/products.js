@@ -8,7 +8,7 @@ const products = [
         category: "unisex",
         scent: "floral",
         shortDesc: "Hồng Đan Mạch • Trầm Hương • Hổ Phách",
-        image: "/assets/images/p1.png"
+        image: "../assets/images/p1.png"
     },
     {
         id: "p2",
@@ -18,7 +18,7 @@ const products = [
         category: "nam",
         scent: "woody",
         shortDesc: "Gỗ Đàn Hương • Vani • Xạ Hương",
-        image: "/assets/images/p2.png"
+        image: "../assets/images/p2.png"
     },
     {
         id: "p3",
@@ -28,7 +28,7 @@ const products = [
         category: "nam",
         scent: "citrus",
         shortDesc: "Cam Bergamot • Oải Hương • Cỏ Hương Bài",
-        image: "/assets/images/p3.png"
+        image: "../assets/images/p3.png"
     },
     {
         id: "p4",
@@ -38,7 +38,7 @@ const products = [
         category: "nữ",
         scent: "floral",
         shortDesc: "Hoa Diên Vĩ • Cacao • Gỗ Tuyết Tùng",
-        image: "/assets/images/p4.png"
+        image: "../assets/images/p4.png"
     },
     {
         id: "p5",
@@ -48,7 +48,7 @@ const products = [
         category: "nữ",
         scent: "floral",
         shortDesc: "Hoa Nhài • Trà Đen • Xạ Hương",
-        image: "/assets/images/p1.png"
+        image: "../assets/images/p1.png"
     },
     {
         id: "p6",
@@ -58,7 +58,7 @@ const products = [
         category: "unisex",
         scent: "citrus",
         shortDesc: "Bạc Hà • Hoa Linh Lan • Xạ Trắng",
-        image: "/assets/images/p2.png"
+        image: "../assets/images/p2.png"
     },
     {
         id: "p7",
@@ -68,7 +68,7 @@ const products = [
         category: "nam",
         scent: "woody",
         shortDesc: "Da Thuộc • Thảo Quả • Đàn Hương",
-        image: "/assets/images/p3.png"
+        image: "../assets/images/p3.png"
     },
     {
         id: "p8",
@@ -78,7 +78,7 @@ const products = [
         category: "nữ",
         scent: "oriental",
         shortDesc: "Vani Madagascar • Caramel • Hạnh Nhân",
-        image: "/assets/images/p4.png"
+        image: "../assets/images/p4.png"
     }
 ];
 
