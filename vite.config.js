@@ -39,7 +39,14 @@ export default defineConfig({
                 faq: 'pages/faq.html',
                 privacy: 'pages/privacy.html',
                 shipping: 'pages/shipping.html',
-                success: 'pages/success.html'
+                success: 'pages/success.html',
+                'admin-index': 'admin/index.html',
+                'admin-dashboard': 'admin/dashboard.html',
+                'admin-login': 'admin/login.html',
+                'admin-products': 'admin/products.html',
+                'admin-orders': 'admin/orders.html',
+                'admin-customers': 'admin/customers.html',
+                'admin-marketing': 'admin/marketing.html'
             }
         }
     }
