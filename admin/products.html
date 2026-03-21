@@ -330,15 +330,23 @@
     </div>
 
     <!-- JavaScript Xử Lý -->
-    <script src="../assets/js/products.js"></script>
     <script>
         // Toggle Sidebar
         const sidebar = document.getElementById('sidebar');
         document.getElementById('open-sidebar').addEventListener('click', () => sidebar.classList.add('active'));
         document.getElementById('close-sidebar').addEventListener('click', () => sidebar.classList.remove('active'));
 
-        // Load Database giả lập
-        let products = window.productsData || [];
+        // Load Database giả lập trực tiếp từ LocalStorage (Độc lập 100% không phụ thuộc file ngoài)
+        let products = [];
+        try {
+            const ls = localStorage.getItem('luxperfume_products');
+            if (ls) {
+                products = JSON.parse(ls);
+            } else {
+                // Sẽ hiển thị trống nếu DB thật sự rỗng
+                products = []; 
+            }
+        } catch(e) { console.error('Lõi đọc LocalStorage', e); }
 
         // Format VNĐ
         const formatMoney = (amount) => new Intl.NumberFormat('vi-VN').format(amount) + '₫';
