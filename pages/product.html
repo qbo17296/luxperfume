@@ -257,18 +257,18 @@
                     <p>Khơi nguồn từ những cánh hồng Đan Mạch kiêu kỳ rực rỡ dưới ánh nắng ban mai, hòa quyện cùng sự sâu lắng, bí ẩn của Trầm hương. Rose Mystique là tuyên ngôn của sự quyến rũ vượt thời gian, là nụ hôn say đắm đọng lại trên làn da.</p>
                 </div>
 
-                <div class="notes-list">
-                    <div class="note-item">
-                        <span class="note-title">Hương Đầu</span>
-                        <span class="note-value">Tiêu Hồng</span>
+                <div class="scent-pyramid">
+                    <div class="scent-level">
+                        <span class="scent-title">Hương Đầu (Top)</span>
+                        <span class="scent-value">Tiêu Hồng, Hạnh Nhân</span>
                     </div>
-                    <div class="note-item">
-                        <span class="note-title">Hương Giữa</span>
-                        <span class="note-value">Hồng Damask</span>
+                    <div class="scent-level">
+                        <span class="scent-title">Hương Giữa (Heart)</span>
+                        <span class="scent-value">Hoa Hồng Damask, Phong Lữ</span>
                     </div>
-                    <div class="note-item">
-                        <span class="note-title">Hương Cuối</span>
-                        <span class="note-value">Trầm Hương</span>
+                    <div class="scent-level">
+                        <span class="scent-title">Hương Cuối (Base)</span>
+                        <span class="scent-value">Trầm Hương, Hoắc Hương</span>
                     </div>
                 </div>
 
@@ -315,6 +315,28 @@
     <!-- Footer Dummy -->
     <include src="components/footer.html"></include>
 
+    
+    <!-- Sticky ATC Bar -->
+    <div class="sticky-atc-bar" id="sticky-atc-bar">
+        <div class="container" style="display:flex; justify-content:space-between; width: 100%; align-items:center;">
+            <div class="sticky-info">
+                <img src="/assets/images/p1.png" alt="Rose Mystique" class="sticky-img" id="sticky-img">
+                <div class="sticky-details">
+                    <h4 id="sticky-name">Rose Mystique</h4>
+                    <p id="sticky-price">4,500,000₫</p>
+                </div>
+            </div>
+            <div class="sticky-actions">
+                <div class="quantity-selector" style="height:44px">
+                    <button type="button" class="qty-btn" id="sticky-qty-minus" style="height:100%">−</button>
+                    <input type="number" class="qty-input" id="sticky-qty-input" value="1" readonly style="height:100%">
+                    <button type="button" class="qty-btn" id="sticky-qty-plus" style="height:100%">+</button>
+                </div>
+                <button type="button" class="btn-primary" id="sticky-atc-btn" style="padding: 0.8rem 2rem;">Thêm Vào Giỏ</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/cart.js"></script>
     <script>
@@ -356,6 +378,45 @@
                 });
             }
         });
+
+                // Intersection Observer for Sticky ATC
+        const mainForm = document.querySelector('.add-to-cart-form');
+        const stickyBar = document.getElementById('sticky-atc-bar');
+        if(mainForm && stickyBar) {
+            const observer = new IntersectionObserver((entries) => {
+                if(!entries[0].isIntersecting) {
+                    stickyBar.classList.add('visible');
+                } else {
+                    stickyBar.classList.remove('visible');
+                }
+            }, { threshold: 0, rootMargin: "-100px 0px 0px 0px" });
+            observer.observe(mainForm);
+        }
+
+        // Sync Sticky QTY with main QTY
+        const stickyQtyInp = document.getElementById('sticky-qty-input');
+        document.getElementById('sticky-qty-minus').addEventListener('click', () => {
+            if(qtyInput.value > 1) {
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+                stickyQtyInp.value = qtyInput.value;
+            }
+        });
+        document.getElementById('sticky-qty-plus').addEventListener('click', () => {
+            if(qtyInput.value < 10) {
+                qtyInput.value = parseInt(qtyInput.value) + 1;
+                stickyQtyInp.value = qtyInput.value;
+            }
+        });
+        
+        // Also update sticky input when main input buttons are clicked
+        document.getElementById('qty-minus').addEventListener('click', () => { stickyQtyInp.value = qtyInput.value; });
+        document.getElementById('qty-plus').addEventListener('click', () => { stickyQtyInp.value = qtyInput.value; });
+
+        document.getElementById('sticky-atc-btn').addEventListener('click', () => {
+            document.getElementById('add-to-cart-btn').click();
+        });
+        
+        // End Inline Script
 
         // Tabs Logic
         function switchTab(tabId, btnElement) {
