@@ -179,37 +179,76 @@
             </div>
             <div class="modal-body">
                 <form id="product-form">
-                    <!-- Hàng 1: Tên & Giá -->
+                    <!-- Hàng 1: Tên & Thương hiệu -->
                     <div class="form-row">
                         <div class="form-group w-50">
                             <label>Tên Sản phẩm</label>
                             <input type="text" name="name" class="form-input" placeholder="Ví dụ: Noir Exquis..." required>
                         </div>
                         <div class="form-group w-50">
-                            <label>Giá Bán (VNĐ)</label>
-                            <input type="number" name="price" class="form-input" placeholder="Ví dụ: 4500000" min="0" required>
-                        </div>
-                    </div>
-                    
-                    <!-- Hàng 2: Thương hiệu, Dung tích & Tồn kho -->
-                    <div class="form-row">
-                        <div class="form-group w-33">
                             <label>Thương hiệu</label>
                             <input type="text" name="brand" class="form-input" placeholder="Ví dụ: Dior, Chanel..." required>
                         </div>
-                        <div class="form-group w-33">
-                            <label>Dung tích</label>
-                            <select name="volume" class="form-input" required>
-                                <option value="">Chọn Dung tích...</option>
-                                <option value="10ml">10ml (Chiết)</option>
-                                <option value="50ml">50ml</option>
-                                <option value="100ml">100ml</option>
-                            </select>
+                    </div>
+                    
+                    <!-- Hàng 2: Shopee-style Variants -->
+                    <div class="section-divider">
+                        <span>Phân loại hàng (Các mức Dung tích)</span>
+                    </div>
+                    
+                    <div class="variants-container" style="background: var(--surface-light); padding: 1.5rem; border: 1px solid var(--border-light); border-radius: 4px; margin-bottom: 24px;">
+                        
+                        <!-- Variant 10ml -->
+                        <div class="variant-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-light);">
+                            <label class="toggle-switch" style="min-width: 50px;">
+                                <input type="checkbox" name="v_10ml_active" onchange="toggleVariant('10ml')">
+                                <span class="slider"></span>
+                            </label>
+                            <div style="flex:1; font-weight: 500;">10ml (Chiết)</div>
+                            <div class="variant-inputs hide-on-inactive" id="inputs_10ml" style="display:flex; gap: 1rem; opacity: 0.4; pointer-events: none;">
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <input type="number" name="v_10ml_price" class="form-input" placeholder="Giá (VNĐ)">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0; min-width: 100px;">
+                                    <input type="number" name="v_10ml_stock" class="form-input" placeholder="Tồn kho">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group w-33">
-                            <label>Số lượng Tồn kho (Chai)</label>
-                            <input type="number" name="stock" class="form-input" placeholder="0" min="0" required>
+
+                        <!-- Variant 50ml -->
+                        <div class="variant-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-light);">
+                            <label class="toggle-switch" style="min-width: 50px;">
+                                <input type="checkbox" name="v_50ml_active" onchange="toggleVariant('50ml')" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <div style="flex:1; font-weight: 500;">50ml</div>
+                            <div class="variant-inputs" id="inputs_50ml" style="display:flex; gap: 1rem; opacity: 1; pointer-events: auto;">
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <input type="number" name="v_50ml_price" class="form-input" placeholder="Giá (VNĐ)" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0; min-width: 100px;">
+                                    <input type="number" name="v_50ml_stock" class="form-input" placeholder="Tồn kho" required>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Variant 100ml -->
+                        <div class="variant-item" style="display: flex; align-items: center; gap: 1rem;">
+                            <label class="toggle-switch" style="min-width: 50px;">
+                                <input type="checkbox" name="v_100ml_active" onchange="toggleVariant('100ml')">
+                                <span class="slider"></span>
+                            </label>
+                            <div style="flex:1; font-weight: 500;">100ml</div>
+                            <div class="variant-inputs hide-on-inactive" id="inputs_100ml" style="display:flex; gap: 1rem; opacity: 0.4; pointer-events: none;">
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <input type="number" name="v_100ml_price" class="form-input" placeholder="Giá (VNĐ)">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0; min-width: 100px;">
+                                    <input type="number" name="v_100ml_stock" class="form-input" placeholder="Tồn kho">
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- Hàng 3: Mô tả Sản phẩm -->
@@ -472,6 +511,25 @@
                 closeModal();
             }
         });
+
+        function toggleVariant(size) {
+            const inputsContainer = document.getElementById('inputs_' + size);
+            const checkbox = document.querySelector('input[name="v_' + size + '_active"]');
+            const inputs = inputsContainer.querySelectorAll('input');
+            
+            if(checkbox.checked) {
+                inputsContainer.style.opacity = '1';
+                inputsContainer.style.pointerEvents = 'auto';
+                inputs.forEach(inp => inp.required = true);
+            } else {
+                inputsContainer.style.opacity = '0.4';
+                inputsContainer.style.pointerEvents = 'none';
+                inputs.forEach(inp => {
+                    inp.required = false;
+                    inp.value = '';
+                });
+            }
+        }
 
         // Xử lý Form Submit (Giả lập)
         document.getElementById('product-form').addEventListener('submit', (e) => {
