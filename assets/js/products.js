@@ -82,4 +82,11 @@ const products = [
     }
 ];
 
-window.productsData = products;
+// Khởi tạo Database giả lập qua LocalStorage
+let savedProducts = localStorage.getItem('luxperfume_products');
+if (!savedProducts) {
+    localStorage.setItem('luxperfume_products', JSON.stringify(products));
+    window.productsData = products;
+} else {
+    window.productsData = JSON.parse(savedProducts);
+}

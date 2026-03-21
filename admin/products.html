@@ -330,20 +330,15 @@
     </div>
 
     <!-- JavaScript Xử Lý -->
+    <script src="../assets/js/products.js"></script>
     <script>
         // Toggle Sidebar
         const sidebar = document.getElementById('sidebar');
         document.getElementById('open-sidebar').addEventListener('click', () => sidebar.classList.add('active'));
         document.getElementById('close-sidebar').addEventListener('click', () => sidebar.classList.remove('active'));
 
-        // Mock Products Data (Sử dụng ảnh AI đã gen ở bài trước)
-        const products = [
-            { id: 'SP001', name: 'Rose Mystique', category: 'Unisex', price: 4500000, stock: 120, image: '../assets/images/p1.png' },
-            { id: 'SP002', name: 'Oud Éternel', category: 'Nam', price: 6200000, stock: 45, image: '../assets/images/p2.png' },
-            { id: 'SP003', name: 'Midnight Citrus', category: 'Nam', price: 3800000, stock: 0, image: '../assets/images/p3.png' },
-            { id: 'SP004', name: 'Velvet Iris', category: 'Nữ', price: 5900000, stock: 85, image: '../assets/images/p4.png' },
-            { id: 'SP005', name: 'Amber Glow', category: 'Unisex', price: 4100000, stock: 7, image: '../assets/images/p1.png' } // Thêm mốc test sắp hết hàng
-        ];
+        // Load Database giả lập
+        let products = window.productsData || [];
 
         // Format VNĐ
         const formatMoney = (amount) => new Intl.NumberFormat('vi-VN').format(amount) + '₫';
@@ -601,17 +596,22 @@
                 }
             }
             
+            // Format cho khớp với frontend shop
             const newProduct = {
                 id: newId,
                 name: dataObj.name,
-                category: dataObj.category || 'Unisex',
+                brand: dataObj.brand || 'Lux Exclusif',
+                category: dataObj.category || 'unisex',
+                scent: 'floral', 
+                shortDesc: 'Mùi hương độc bản do người dùng thiết kế',
                 price: price,
                 stock: stock,
                 image: imageSrc
             };
             
-            // Cập nhật mốc UI
+            // Cập nhật mốc UI và lưu xuống Fake Database
             products.unshift(newProduct);
+            localStorage.setItem('luxperfume_products', JSON.stringify(products));
             renderProducts(products);
             
             alert('Đăng sản phẩm "' + dataObj.name + '" thành công! Mã SP mới: ' + newId);
