@@ -1,5 +1,5 @@
 // products.js - Dữ liệu mẫu sản phẩm nước hoa
-const products = [
+const defaultMockProducts = [
     {
         id: "p1",
         name: "Rose Mystique",
@@ -85,8 +85,8 @@ const products = [
 // Khởi tạo Database giả lập qua LocalStorage
 let savedProducts = localStorage.getItem('luxperfume_products');
 if (!savedProducts) {
-    localStorage.setItem('luxperfume_products', JSON.stringify(products));
-    window.productsData = products;
+    localStorage.setItem('luxperfume_products', JSON.stringify(defaultMockProducts));
+    window.productsData = defaultMockProducts;
 } else {
     window.productsData = JSON.parse(savedProducts);
 }
