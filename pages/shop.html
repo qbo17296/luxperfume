@@ -132,7 +132,7 @@
             }
         }
     </style>
-  <link rel="stylesheet" crossorigin href="/assets/style-Oh1D6yWO.css">
+  <link rel="stylesheet" crossorigin href="/assets/style-t2hjHaih.css">
 </head>
 <body>
 
@@ -152,10 +152,10 @@
                 <button class="icon-btn" aria-label="Tìm kiếm">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
                 </button>
-                <a href="/pages/cart.html" class="icon-btn cart-btn" aria-label="Giỏ hàng">
+                <button class="icon-btn cart-btn" aria-label="Giỏ hàng" onclick="openCartDrawer()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                     <span class="cart-count">0</span>
-                </a>
+                </button>
                 
                 <!-- Khu vực Auth Thay Thế -->
                 <div id="auth-section" style="display: flex; align-items: center;">
@@ -172,7 +172,24 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
         </div>
-    </header>
+    
+    <!-- Cart Drawer Off-Canvas -->
+    <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h3>Giỏ Hàng <span class="cart-count">0</span></h3>
+            <button class="close-cart-btn icon-btn" onclick="closeCartDrawer()">&times;</button>
+        </div>
+        <div class="cart-drawer-body" id="cartDrawerList">
+            <!-- Render items here -->
+        </div>
+        <div class="cart-drawer-footer">
+            <div class="cart-subtotal"><span>Tổng:</span> <strong id="cartDrawerSubtotal" class="text-gold">0₫</strong></div>
+            <a href="/pages/checkout.html" class="btn-primary btn-full" style="text-align:center;">Thanh Toán</a>
+            <a href="/pages/cart.html" class="btn-outline btn-full" style="margin-top:0.5rem; text-align:center;">Xem Giỏ Hàng</a>
+        </div>
+    </div>
+</header>
     
     <main>
         <!-- Page Header -->
