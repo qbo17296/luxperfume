@@ -1,0 +1,36 @@
+<header class="navbar glass-nav" id="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <span class="text-gold">Lux</span> Perfume
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="active">Trang chủ</a>
+                <a href="/pages/shop.html">Cửa hàng</a>
+                <a href="#featured">Bộ sưu tập</a>
+                <a href="#footer">Liên hệ</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="icon-btn" aria-label="Tìm kiếm">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                </button>
+                <a href="/pages/cart.html" class="icon-btn cart-btn" aria-label="Giỏ hàng">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="cart-count">0</span>
+                </a>
+                
+                <!-- Khu vực Auth Thay Thế -->
+                <div id="auth-section" style="display: flex; align-items: center;">
+                    <a href="/pages/login.html" class="btn-login-outline" id="loginBtn">Đăng nhập</a>
+                    <div id="userProfile" onclick="window.location.href='pages/profile.html'" style="display: none; align-items: center; gap: 0.5rem; color: var(--gold-primary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="hide-on-mobile">Xin chào, Khách VIP</span>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn icon-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+    </header>

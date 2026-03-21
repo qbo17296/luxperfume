@@ -1,0 +1,29 @@
+{
+  "name": "banhangnuochoa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist --dotfiles"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qbo17296/luxperfume.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/qbo17296/luxperfume/issues"
+  },
+  "homepage": "https://github.com/qbo17296/luxperfume#readme",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "vite": "^8.0.1"
+  }
+}
