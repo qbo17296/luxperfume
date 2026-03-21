@@ -310,13 +310,10 @@
                     </div>
 
                     <div class="tab-content" id="tab-media">
-                        <p class="text-secondary" style="margin-bottom: 1rem; font-size: 0.875rem;">Kịch bản review Video/Tiktok dành riêng cho Affiliates & KOC/KOL.</p>
-                        <textarea id="review-script" style="width: 100%; height: 160px; padding: 1rem; border: 1px solid var(--border-light); background: var(--surface-color); color: var(--text-primary); border-radius: 4px; font-family: inherit; line-height: 1.6; resize: vertical; margin-bottom: 1rem; outline: none;" readonly></textarea>
-                        
-                        <button type="button" class="btn-primary" onclick="copyScript()" style="display: flex; align-items: center; gap: 0.5rem;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                            Copy Kịch Bản
-                        </button>
+                        <div class="product-description-full" style="line-height: 1.8; color: var(--text-secondary);">
+                            <p>Khơi nguồn từ những cánh hồng Đan Mạch kiêu kỳ rực rỡ dưới ánh nắng ban mai, hòa quyện cùng sự sâu lắng, bí ẩn của Trầm hương. Rose Mystique là tuyên ngôn của sự quyến rũ vượt thời gian, là nụ hôn say đắm đọng lại trên làn da.</p>
+                            <p style="margin-top: 1rem;">Với nồng độ Extrait de Parfum tinh khiết nhất, thiết kế hộp sang trọng được chế tác thủ công giúp lưu giữ trọn vẹn từng giọt hương liệu. Sản phẩm phản ánh đẳng cấp và gu thẩm mỹ thanh lịch của người sở hữu.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -439,29 +436,7 @@
             btnElement.classList.add('active');
         }
 
-        // Generate Media Script
-        document.addEventListener('DOMContentLoaded', () => {
-            const productName = document.getElementById('product-name').innerText;
-            const scriptTemplate = `Wow! Mình vừa mới trải nghiệm thử chai nước hoa ${productName} từ thương hiệu Lux Perfume.
-Mùi hương thực sự quá ấn tượng, toát lên vẻ sang trọng và cuốn hút ngay từ những nốt hương đầu tiên. Nếu bạn đang tìm kiếm một chai nước hoa đẳng cấp khiến ai lướt qua cũng phải ngoái nhìn, ${productName} chắc chắn là sự lựa chọn chân ái nhé.
 
-- theo dõi, thả tim, lưu video, bình luận,...
-- Cảm ơn đã xem`;
-
-            document.getElementById('review-script').value = scriptTemplate;
-        });
-
-        // Copy Script
-        function copyScript() {
-            const textarea = document.getElementById('review-script');
-            textarea.select();
-            textarea.setSelectionRange(0, 99999); // Mobile
-            navigator.clipboard.writeText(textarea.value).then(() => {
-                alert('Đã copy kịch bản truyền thông!');
-            }).catch(err => {
-                console.error('Không thể copy: ', err);
-            });
-        }
     </script>
 </body>
 </html>
