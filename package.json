@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "postbuild": "node post-build-fix.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist --dotfiles"
+    "deploy": "gh-pages -d dist --dotfiles --user \"qbo17296 <qbo17296@users.noreply.github.com>\" -m \"Auto-trigger deployment from qbo17296\""
   },
   "repository": {
     "type": "git",
