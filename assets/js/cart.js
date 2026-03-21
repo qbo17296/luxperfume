@@ -29,6 +29,7 @@ window.addToCart = function(product) {
         });
     }
     saveCart(cartItems);
+    if (typeof openCartDrawer === 'function') openCartDrawer();
 }
 
 function removeFromCart(id) {
@@ -125,3 +126,58 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
     renderCartPage(); 
 });
+
+window.openCartDrawer = function() {
+    const drawer = document.getElementById('cartDrawer');
+    const overlay = document.getElementById('cartOverlay');
+    if(drawer && overlay) {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        renderCartDrawer();
+    }
+}
+window.closeCartDrawer = function() {
+    const drawer = document.getElementById('cartDrawer');
+    const overlay = document.getElementById('cartOverlay');
+    if(drawer && overlay) {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+    }
+}
+window.renderCartDrawer = function() {
+    const list = document.getElementById('cartDrawerList');
+    const subtotalNode = document.getElementById('cartDrawerSubtotal');
+    if(!list) return;
+
+    let cartItems = getCart();
+    if(cartItems.length === 0) {
+        list.innerHTML = '<div class="cart-drawer-empty">Giỏ hàng của bạn đang trống.</div>';
+        if(subtotalNode) subtotalNode.textContent = '0₫';
+        return;
+    }
+
+    let html = '';
+    let totalValue = 0;
+    cartItems.forEach(item => {
+        totalValue += item.price * item.qty;
+        html += `
+        <div class="cart-drawer-item">
+            <img src="${item.image}" alt="${item.name}" class="cart-drawer-item-img">
+            <div class="cart-drawer-item-info">
+                <div style="display:flex; justify-content:space-between">
+                    <div class="cart-drawer-item-title">${item.name}</div>
+                    <button class="cart-drawer-item-remove" onclick="removeFromCart('${item.id}'); renderCartDrawer()">&times;</button>
+                </div>
+                <div class="cart-drawer-item-price">${formatVND(item.price)}</div>
+                <div class="cart-drawer-item-qty">
+                    <button onclick="updateQty('${item.id}', -1); renderCartDrawer()">-</button>
+                    <input type="text" value="${item.qty}" readonly>
+                    <button onclick="updateQty('${item.id}', 1); renderCartDrawer()">+</button>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+    list.innerHTML = html;
+    if(subtotalNode) subtotalNode.textContent = formatVND(totalValue);
+}
