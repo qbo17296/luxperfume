@@ -296,18 +296,18 @@
                     <a href="../index.html">Trang chủ</a> / <a href="shop.html">Niche Perfumes</a> / Rose Mystique
                 </div>
                 
-                <h1 class="product-title" id="product-name" style="margin-bottom: 0.5rem;">Rose Mystique</h1>
+                <h1 class="product-title" id="product-name" style="margin-bottom: 0.5rem; font-size: 2.1rem; font-weight: 500; font-family: var(--font-serif), serif; color: var(--text-primary);">Rose Mystique</h1>
                 
-                <div class="price-container" style="margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-light); padding-bottom: 1rem;">
+                <div class="price-container" style="margin-bottom: 2rem;">
                     <div class="old-price" style="text-decoration: line-through; color: #888; font-size: 1.125rem; margin-bottom: 0.25rem;">
                         5,400,000<span style="text-decoration: underline;">đ</span>
                     </div>
                     <div class="product-price" id="product-price" data-price="4500000" style="font-size: 2.25rem; color: #d32f2f; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 0;">
                         4,500,000<span style="text-decoration: underline;">đ</span>
                 </div>
-                
-                <div class="product-description">
-                    <p>Khơi nguồn từ những cánh hồng Đan Mạch kiêu kỳ rực rỡ dưới ánh nắng ban mai, hòa quyện cùng sự sâu lắng, bí ẩn của Trầm hương. Rose Mystique là tuyên ngôn của sự quyến rũ vượt thời gian, là nụ hôn say đắm đọng lại trên làn da.</p>
+                <div class="product-description" style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; color: var(--text-primary);">Mô Tả Sản Phẩm</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6; font-size: 1rem;">Khơi nguồn từ những cánh hồng Đan Mạch kiêu kỳ rực rỡ dưới ánh nắng ban mai, hòa quyện cùng sự sâu lắng, bí ẩn của Trầm hương. Rose Mystique là tuyên ngôn của sự quyến rũ vượt thời gian, là nụ hôn say đắm đọng lại trên làn da.</p>
                 </div>
 
                 <div class="notes-list">
@@ -552,7 +552,12 @@
                     
                     // Update Desc & Brand
                     const descContainer = document.querySelector('.product-description');
-                    if (descContainer) descContainer.innerHTML = `<p>${p.shortDesc || 'Sản phẩm cao cấp từ ' + p.brand}</p>`;
+                    if (descContainer) {
+                        descContainer.innerHTML = `
+                            <h3 style="font-size: 1rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; color: var(--text-primary);">Mô Tả Sản Phẩm</h3>
+                            <p style="color: var(--text-secondary); line-height: 1.6; font-size: 1rem;">${p.shortDesc || 'Sản phẩm cao cấp từ ' + p.brand}</p>
+                        `;
+                    }
                     
                     const breadcrumb = document.querySelector('.breadcrumb');
                     if(breadcrumb) {
